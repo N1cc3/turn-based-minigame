@@ -9,26 +9,22 @@ class GameUnit(val unitType: UnitType, val player: Player) {
 
 	val effects = new ListBuffer[Effect]
 
-	// Stats
 	var position: Hex = _
 	var hp: Int = unitType.hp
 
-	def range: Int = unitType.range + effects.reduceLeft(_.effectType.range + _.effectType.range)
+	def attack: Int = unitType.attack + effects.map(_.effectType.attack).reduceLeft(_ + _)
 
-	def speed: Int = unitType.speed + effects.reduceLeft(_.effectType.speed + _.effectType.speed)
+	def defence: Int = unitType.defence + effects.map(_.effectType.defence).reduceLeft(_ + _)
+
+	def armor: Int = unitType.armor + effects.map(_.effectType.armor).reduceLeft(_ + _)
+
+	def range: Int = unitType.range + effects.map(_.effectType.range).reduceLeft(_ + _)
+
+	def speed: Int = unitType.speed + effects.map(_.effectType.speed).reduceLeft(_ + _)
 
 	def cost: Int = unitType.cost
 
 	def upkeep: Int = unitType.upkeep
-
-	def attacks(target: GameUnit): Unit = {
-		target.takesDamage(this.attack)
-		this.takesDamage(target.defence)
-	}
-
-	def attack: Int = unitType.attack + effects.reduceLeft(_.effectType.attack + _.effectType.attack)
-
-	def defence: Int = unitType.defence + effects.reduceLeft(_.effectType.defence + _.effectType.defence)
 
 	// Events
 
@@ -43,6 +39,9 @@ class GameUnit(val unitType: UnitType, val player: Player) {
 
 	// Actions
 
-	def armor: Int = unitType.armor + effects.reduceLeft(_.effectType.armor + _.effectType.armor)
+	def attacks(target: GameUnit): Unit = {
+		target.takesDamage(this.attack)
+		this.takesDamage(target.defence)
+	}
 
 }
