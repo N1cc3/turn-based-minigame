@@ -3,7 +3,7 @@ package hexgrid
 import scala.collection.mutable.ListBuffer
 import scala.math._
 
-class Cube(x: Int, y: Int, z: Int) {
+class Cube(val x: Int, val y: Int, val z: Int) {
 
 	def toHex: Hex = {
 		val col = x + (z - (z & 1)) / 2
