@@ -1,0 +1,3 @@
+element,style
+newGameBtn,"-fx-font-size: 14px; -fx-text-fill: green;"
+loadGameBtn,"-fx-font-size: 14px; -fx-text-fill: blue;"
