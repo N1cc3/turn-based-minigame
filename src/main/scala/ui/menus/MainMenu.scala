@@ -9,15 +9,15 @@ import ui.Theme
 class MainMenu(theme: Theme) extends Scene {
 
 	private val mainBox = new VBox()
-	mainBox.style = theme.get("MainMenu.mainBox").getOrElse("")
+	mainBox.style = theme.getOrElse("MainMenu.mainBox", "")
 	this.content.add(mainBox)
 
 	private val newGameBtn = new Button("New Game")
-	newGameBtn.style = theme.get("MainMenu.newGameBtn").getOrElse("")
+	newGameBtn.style = theme.getOrElse("MainMenu.newGameBtn", "")
 	mainBox.getChildren.add(newGameBtn)
 
 	private val loadGameBtn = new Button("Load Game")
-	loadGameBtn.style = theme.get("MainMenu.loadGameBtn").getOrElse("")
+	loadGameBtn.style = theme.getOrElse("MainMenu.loadGameBtn", "")
 	mainBox.getChildren.add(loadGameBtn)
 
 	// Events
