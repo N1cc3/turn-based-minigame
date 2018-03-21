@@ -1,7 +1,6 @@
 package ui.ingame
 
 import scalafx.scene.Scene
-import scalafx.scene.canvas.Canvas
 import scalafx.scene.layout.{HBox, VBox}
 import ui.Theme
 
@@ -15,7 +14,7 @@ class InGameScene(theme: Theme) extends Scene {
 	playerPanel1.style = theme.getOrElse("InGameScene.playerPanel1", "")
 	mainBox.getChildren.add(playerPanel1)
 
-	private val canvas = new Canvas(640, 480)
+	private val canvas = new GameCanvas()
 	private val canvasBox = new VBox(canvas)
 	canvasBox.style = theme.getOrElse("InGameScene.canvasBox", "")
 	mainBox.getChildren.add(canvasBox)
