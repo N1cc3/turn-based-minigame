@@ -15,7 +15,7 @@ object Launcher extends JFXApp {
 	}
 
 	modSelect.setSelectModEvent(handle {
-		stage = new App(modSelect.getSelectedMod())
+		stage = new App(new Mod(modSelect.getSelectedMod()))
 	})
 
 	private def getMods(): Seq[String] = {
