@@ -1,4 +1,4 @@
-package game
+package game.data
 
 import scala.collection.mutable.ListBuffer
 

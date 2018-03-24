@@ -1,3 +1,5 @@
+package game
+
 import scalafx.Includes._
 import scalafx.application.JFXApp.PrimaryStage
 import ui.ingame.InGameScene
@@ -9,7 +11,7 @@ class App(mod: Mod = new Mod("default")) extends PrimaryStage {
 
 	private val mainMenu = new MainMenu(theme)
 	private val mapSelect = new MapSelect(theme)
-	private val inGameScene = new InGameScene(theme)
+	private val inGameScene = new InGameScene(theme, mod)
 
 	title = "Hexagonal Turn Based Strategy Game: " + mod.name
 	scene = mainMenu

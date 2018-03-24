@@ -1,3 +1,5 @@
+package game
+
 import java.io.File
 
 import scalafx.Includes.handle
@@ -10,7 +12,7 @@ object Launcher extends JFXApp {
 	private val modSelect = new ModSelect(getMods)
 
 	stage = new PrimaryStage {
-		title = "Select Mod"
+		title = "Select game.Mod"
 		scene = modSelect
 	}
 

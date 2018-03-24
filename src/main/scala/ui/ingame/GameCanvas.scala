@@ -13,6 +13,6 @@ class GameCanvas extends Canvas {
 
 	private val file = new File(getClass.getResource("/mods/default/terrain/grass/grass_14.png").getPath)
 	private val image = new Image("file://" + file.toURI.getPath)
-	this.graphicsContext2D.drawImage(image, 50, 50)
+	this.graphicsContext2D.drawImage(image, 50, 50, 50, 50)
 
 }
