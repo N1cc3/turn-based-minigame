@@ -26,10 +26,6 @@ class InGameScene(theme: Theme, mod: Mod) extends Scene {
 	mainBox.getChildren.add(playerPanel2)
 
 	val map: GameMap = mod.maps.values.toList.head
-	for (y <- 0 until map.sizeY) {
-		for (x <- 0 until map.sizeX) {
-			canvas.getGraphicsContext2D.drawImage(map.terrain(x)(y).image, 50 * x, 50 * y, 50, 50)
-		}
-	}
+	canvas.drawMap(map)
 
 }

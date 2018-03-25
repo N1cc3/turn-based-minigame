@@ -1,9 +1,8 @@
 package ui.ingame
 
-import java.io.File
-
+import game.data.GameMap
+import hexgrid.Hex
 import scalafx.scene.canvas.Canvas
-import scalafx.scene.image.Image
 
 
 class GameCanvas extends Canvas {
@@ -11,8 +10,16 @@ class GameCanvas extends Canvas {
 	width = 640
 	height = 480
 
-	private val file = new File(getClass.getResource("/mods/default/terrain/grass/grass_14.png").getPath)
-	private val image = new Image("file://" + file.toURI.getPath)
-	this.graphicsContext2D.drawImage(image, 50, 50, 50, 50)
+	val hexSize = 150
+
+	def drawMap(map: GameMap) = {
+		for (y <- 0 until map.sizeY) {
+			for (x <- 0 until map.sizeX) {
+				val hex = new Hex(x, y)
+				val position = hex.drawingPosition(hexSize)
+				this.getGraphicsContext2D.drawImage(map.terrain(x)(y).image, position.x, position.y, hexSize, hexSize)
+			}
+		}
+	}
 
 }

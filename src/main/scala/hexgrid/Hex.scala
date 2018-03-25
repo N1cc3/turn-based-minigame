@@ -1,9 +1,12 @@
 package hexgrid
 
-import scala.math._
 import scalafx.geometry.Point2D
 
+import scala.math._
+
 class Hex(val x: Int, val y: Int) {
+
+	val parity = y & 1
 
 	val even_directions = List(
 		(1, 0),
@@ -26,7 +29,6 @@ class Hex(val x: Int, val y: Int) {
 	val directions = List(even_directions, odd_directions)
 
 	def neighbors(): List[Hex] = {
-		val parity = this.y & 1
 		directions(parity).map(offset => new Hex(this.x + offset._1, this.y + offset._2))
 	}
 
@@ -41,6 +43,10 @@ class Hex(val x: Int, val y: Int) {
 
 	def neighborsWithin(range: Int): List[Hex] = {
 		this.toCube.neighborsWithin(range).map(_.toHex)
+	}
+
+	def drawingPosition(size: Double): Point2D = {
+		new Point2D(size * x + size * parity / 2, size * y * 3 / 4)
 	}
 
 	def corner(center: Point2D, size: Double, i: Int): Point2D = {
