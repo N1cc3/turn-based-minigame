@@ -17,10 +17,10 @@ class Mod(val name: String) {
 
 	val terrainReader: CSVReader = CSVReader.open(modPath + "terrains.csv")
 	for (terrainData <- terrainReader.allWithHeaders()) {
-		val name = terrainData.get("NAME").get
-		val moveCost = terrainData.get("MOVE_COST").get.toInt
+		val name = terrainData("NAME")
+		val moveCost = terrainData("MOVE_COST").toInt
 		val effects = List.empty[Effect]
-		val image = getImage(terrainData.get("IMAGE").get)
+		val image = getImage(terrainData("IMAGE"))
 		terrainTypes += name -> new TerrainType(name, moveCost, effects, image)
 	}
 

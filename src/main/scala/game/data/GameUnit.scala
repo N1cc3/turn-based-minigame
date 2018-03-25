@@ -12,15 +12,15 @@ class GameUnit(val unitType: UnitType, val player: Player) {
 	var position: Hex = _
 	var hp: Int = unitType.hp
 
-	def attack: Int = unitType.attack + effects.map(_.effectType.attack).reduceLeft(_ + _)
+	def attack: Int = unitType.attack + effects.map(_.effectType.attack).sum
 
-	def defence: Int = unitType.defence + effects.map(_.effectType.defence).reduceLeft(_ + _)
+	def defence: Int = unitType.defence + effects.map(_.effectType.defence).sum
 
-	def armor: Int = unitType.armor + effects.map(_.effectType.armor).reduceLeft(_ + _)
+	def armor: Int = unitType.armor + effects.map(_.effectType.armor).sum
 
-	def range: Int = unitType.range + effects.map(_.effectType.range).reduceLeft(_ + _)
+	def range: Int = unitType.range + effects.map(_.effectType.range).sum
 
-	def speed: Int = unitType.speed + effects.map(_.effectType.speed).reduceLeft(_ + _)
+	def speed: Int = unitType.speed + effects.map(_.effectType.speed).sum
 
 	def cost: Int = unitType.cost
 

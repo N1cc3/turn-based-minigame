@@ -6,10 +6,10 @@ import ui.Theme
 
 class PlayerPanel(theme: Theme) extends VBox {
 
-	this.style = theme.getOrElse("PlayerPanel.mainBox", "")
+	this.style = theme("PlayerPanel.mainBox")
 
 	private val playerLabel = new Label("Player Name")
-	playerLabel.style = theme.getOrElse("PlayerPanel.playerLabel", "")
+	playerLabel.style = theme("PlayerPanel.playerLabel")
 	this.children.add(playerLabel)
 
 }

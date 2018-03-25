@@ -28,7 +28,7 @@ class ModSelect(mods: Iterable[String]) extends Scene {
 	mainBox.children.add(selectModBtn)
 
 
-	def getSelectedMod(): String = toggleGroup.selectedToggle.value.getUserData.asInstanceOf[String]
+	def getSelectedMod(): String = toggleGroup.selectedToggle.value.getUserData.toString
 
 	// Events
 
