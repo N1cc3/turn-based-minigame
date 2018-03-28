@@ -5,7 +5,7 @@ import hexgrid.Hex
 import scala.collection.mutable.ListBuffer
 import scala.math.max
 
-class GameUnit(val unitType: UnitType, val player: Player) {
+class Unit(val unitType: UnitType, val player: Player) {
 
 	val effects = new ListBuffer[Effect]
 
@@ -28,7 +28,7 @@ class GameUnit(val unitType: UnitType, val player: Player) {
 
 	// Events
 
-	def takesDamage(damage: Int, skipArmor: Boolean = false): Unit = {
+	def takesDamage(damage: Int, skipArmor: Boolean = false) = {
 		if (skipArmor) {
 			this.hp -= damage
 		} else {
@@ -39,7 +39,7 @@ class GameUnit(val unitType: UnitType, val player: Player) {
 
 	// Actions
 
-	def attacks(target: GameUnit): Unit = {
+	def attacks(target: Unit) = {
 		target.takesDamage(this.attack)
 		this.takesDamage(target.defence)
 	}

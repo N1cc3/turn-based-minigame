@@ -1,20 +1,22 @@
 package ui.ingame
 
-import game.data.GameMap
+import game.data.Map
 import hexgrid.Hex
 import scalafx.scene.canvas.Canvas
+
+import scala.math.min
 
 
 class GameCanvas extends Canvas {
 
-	val gc = this.getGraphicsContext2D
+	var map: Map = _
 
-	var map: GameMap = _
+	private val gc = this.getGraphicsContext2D
 
 	def hexSize: Double = {
 		val x: Double = this.width.value / (map.sizeX.toDouble + 0.5)
 		val y: Double = this.height.value / (map.sizeY.toDouble * 3.0 / 4.0 + 1.0 / 4.0)
-		Math.min(x, y)
+		min(x, y)
 	}
 
 	def drawMap() = {

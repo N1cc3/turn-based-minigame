@@ -1,7 +1,7 @@
 package game
 
 import com.github.tototoshi.csv.CSVReader
-import game.data.{Effect, GameMap, TerrainType}
+import game.data.{Effect, Map, TerrainType}
 import scalafx.scene.image.Image
 import ui.Theme
 
@@ -24,13 +24,13 @@ class Mod(val name: String) {
 		terrainTypes += name -> new TerrainType(name, moveCost, effects, image)
 	}
 
-	val maps = new mutable.HashMap[String, GameMap]
+	val maps = new mutable.HashMap[String, Map]
 	val mapsReader: CSVReader = CSVReader.open(modPath + "maps.csv")
 	for (mapsData <- mapsReader.allWithHeaders()) {
 		val name = mapsData("NAME")
 		val sizeX = mapsData("SIZE_X").toInt
 		val sizeY = mapsData("SIZE_Y").toInt
-		val map = new GameMap(name, sizeX, sizeY)
+		val map = new Map(name, sizeX, sizeY)
 		maps += name -> map
 
 		val mapReader: CSVReader = CSVReader.open(modPath + "maps/" + name + ".csv")
