@@ -1,7 +1,6 @@
 package ui.ingame
 
 import game.Mod
-import game.data.GameMap
 import scalafx.scene.Scene
 import scalafx.scene.layout.{HBox, VBox}
 import ui.Theme
@@ -16,16 +15,29 @@ class InGameScene(theme: Theme, mod: Mod) extends Scene {
 	playerPanel1.style = theme("InGameScene.playerPanel1")
 	mainBox.getChildren.add(playerPanel1)
 
-	private val canvas = new GameCanvas()
-	private val canvasBox = new VBox(canvas)
+	private val canvasBox = new VBox()
 	canvasBox.style = theme("InGameScene.canvasBox")
 	mainBox.getChildren.add(canvasBox)
+
+	val canvas = new GameCanvas()
+	canvas.map = mod.maps.values.toList.head
+	canvas.drawMap()
+	canvasBox.getChildren.add(canvas)
 
 	private val playerPanel2 = new PlayerPanel(theme)
 	playerPanel2.style = theme("InGameScene.playerPanel2")
 	mainBox.getChildren.add(playerPanel2)
 
-	val map: GameMap = mod.maps.values.toList.head
-	canvas.drawMap(map)
+	// Listeners
+
+	this.widthProperty.addListener((_, _, newValue) => {
+		canvas.width = newValue.doubleValue() - playerPanel1.getWidth - playerPanel2.getWidth
+		canvas.drawMap()
+	})
+
+	this.heightProperty.addListener((_, _, newValue) => {
+		canvas.height = newValue.doubleValue()
+		canvas.drawMap()
+	})
 
 }

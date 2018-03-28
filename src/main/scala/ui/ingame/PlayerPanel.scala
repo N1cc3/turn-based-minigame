@@ -6,6 +6,8 @@ import ui.Theme
 
 class PlayerPanel(theme: Theme) extends VBox {
 
+	this.setPrefWidth(100)
+
 	this.style = theme("PlayerPanel.mainBox")
 
 	private val playerLabel = new Label("Player Name")
