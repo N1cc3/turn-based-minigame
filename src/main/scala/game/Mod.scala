@@ -1,7 +1,7 @@
 package game
 
 import com.github.tototoshi.csv.CSVReader
-import game.data.{Effect, Map, TerrainType}
+import game.data.{Effect, Map, TerrainType, UnitType}
 import scalafx.scene.image.Image
 import ui.Theme
 
@@ -13,8 +13,9 @@ class Mod(val name: String) {
 
 	val theme = new Theme(modPath + "theme.csv")
 
-	val terrainTypes = new mutable.HashMap[String, TerrainType]
+	// Terrain
 
+	val terrainTypes = new mutable.HashMap[String, TerrainType]
 	val terrainReader: CSVReader = CSVReader.open(modPath + "terrains.csv")
 	for (terrainData <- terrainReader.allWithHeaders()) {
 		val name = terrainData("NAME")
@@ -23,6 +24,8 @@ class Mod(val name: String) {
 		val image = getImage(terrainData("IMAGE"))
 		terrainTypes += name -> new TerrainType(name, moveCost, effects, image)
 	}
+
+	// Maps
 
 	val maps = new mutable.HashMap[String, Map]
 	val mapsReader: CSVReader = CSVReader.open(modPath + "maps.csv")
@@ -41,6 +44,25 @@ class Mod(val name: String) {
 			map.terrain(x)(y) = terrainTypes(terrain)
 		}
 	}
+
+	// Units
+
+	val unitTypes = new mutable.HashMap[String, UnitType]
+	val unitReader: CSVReader = CSVReader.open(modPath + "units.csv")
+	for (unitData <- unitReader.allWithHeaders()) {
+		val name = unitData("NAME")
+		val hp = unitData("HP").toInt
+		val attack = unitData("ATTACK").toInt
+		val defence = unitData("DEFENCE").toInt
+		val armor = unitData("ARMOR").toInt
+		val range = unitData("RANGE").toInt
+		val speed = unitData("SPEED").toInt
+		val cost = unitData("COST").toInt
+		val upkeep = unitData("UPKEEP").toInt
+		val image = getImage(unitData("IMAGE"))
+		unitTypes += name -> new UnitType(name, hp, attack, defence, armor, range, speed, cost, upkeep, image)
+	}
+
 
 	def getImage(name: String) = new Image("file://" + modPath + name)
 

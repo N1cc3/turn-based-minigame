@@ -1,5 +1,7 @@
 package game.data
 
+import scalafx.scene.image.Image
+
 class UnitType(
 								val name: String,
 								val hp: Int,
@@ -10,4 +12,5 @@ class UnitType(
 								val speed: Int,
 								val cost: Int,
 								val upkeep: Int,
+								val image: Image,
 							)
