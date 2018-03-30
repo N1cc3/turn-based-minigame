@@ -1,7 +1,7 @@
 package game
 
 import com.github.tototoshi.csv.CSVReader
-import game.data.{Effect, Map, TerrainType, UnitType}
+import game.data.{Effect, EffectType, Map, TerrainType, UnitType}
 import scalafx.scene.image.Image
 import ui.Theme
 
@@ -61,6 +61,22 @@ class Mod(val name: String) {
 		val upkeep = unitData("UPKEEP").toInt
 		val image = getImage(unitData("IMAGE"))
 		unitTypes += name -> new UnitType(name, hp, attack, defence, armor, range, speed, cost, upkeep, image)
+	}
+
+	// Effects
+
+	val effectTypes = new mutable.HashMap[String, EffectType]
+	val effectReader: CSVReader = CSVReader.open(modPath + "effects.csv")
+	for (effectData <- effectReader.allWithHeaders()) {
+		val name = effectData("NAME")
+		val duration = effectData("DURATION").toInt
+		val attack = effectData("ATTACK").toInt
+		val defence = effectData("DEFENCE").toInt
+		val armor = effectData("ARMOR").toInt
+		val range = effectData("RANGE").toInt
+		val speed = effectData("SPEED").toInt
+		val damage = effectData("DAMAGE").toInt
+		effectTypes += name -> new EffectType(name, duration, attack, defence, armor, range, speed, damage)
 	}
 
 
