@@ -32,7 +32,8 @@ class GameCanvas extends Canvas {
 	def drawUnits(units: List[Unit], map: Map) = {
 		val size = hexSize(map)
 		for (unit <- units) {
-			gc.drawImage(unit.unitType.image, unit.position.x, unit.position.y, size, size)
+			val position = unit.position.drawingPosition(size)
+			gc.drawImage(unit.unitType.image, position.x, position.y, size, size)
 		}
 	}
 

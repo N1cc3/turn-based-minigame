@@ -1,13 +1,9 @@
 package ui.ingame
 
 import game.Mod
-import game.data.{Player, Unit}
-import hexgrid.Hex
 import scalafx.scene.Scene
 import scalafx.scene.layout.{HBox, VBox}
 import ui.Theme
-
-import scala.collection.mutable.ListBuffer
 
 class InGameScene(theme: Theme, mod: Mod) extends Scene {
 
@@ -24,13 +20,9 @@ class InGameScene(theme: Theme, mod: Mod) extends Scene {
 	mainBox.getChildren.add(canvasBox)
 
 	val canvas = new GameCanvas()
-	val map = mod.maps.values.toList.head
-	val units = new ListBuffer[Unit]
-	val unit = new Unit(mod.unitTypes("Ballista"), new Player())
-	unit.position = new Hex(1, 1)
-	units += unit
-	canvas.drawMap(map)
-	canvas.drawUnits(units.toList, map)
+	val gameState = mod.loadScenario(mod.scenarioNames.head)
+	canvas.drawMap(gameState.map)
+	canvas.drawUnits(gameState.units.toList, gameState.map)
 	canvasBox.getChildren.add(canvas)
 
 	private val playerPanel2 = new PlayerPanel(theme)
@@ -41,14 +33,14 @@ class InGameScene(theme: Theme, mod: Mod) extends Scene {
 
 	this.widthProperty.addListener((_, _, newValue) => {
 		canvas.width = newValue.doubleValue() - playerPanel1.getWidth - playerPanel2.getWidth
-		canvas.drawMap(map)
-		canvas.drawUnits(units.toList, map)
+		canvas.drawMap(gameState.map)
+		canvas.drawUnits(gameState.units.toList, gameState.map)
 	})
 
 	this.heightProperty.addListener((_, _, newValue) => {
 		canvas.height = newValue.doubleValue()
-		canvas.drawMap(map)
-		canvas.drawUnits(units.toList, map)
+		canvas.drawMap(gameState.map)
+		canvas.drawUnits(gameState.units.toList, gameState.map)
 	})
 
 }
