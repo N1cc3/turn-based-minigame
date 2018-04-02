@@ -12,7 +12,7 @@ class InGameScene(theme: Theme, mod: Mod) extends Scene {
 	mainBox.style = theme("InGameScene.mainBox")
 
 	private val playerPanel1 = new PlayerPanel(theme)
-	playerPanel1.style = theme("InGameScene.playerPanel1")
+	playerPanel1.style = playerPanel1.style.value + theme("InGameScene.playerPanel1")
 	mainBox.getChildren.add(playerPanel1)
 
 	private val canvasBox = new VBox()
@@ -26,7 +26,7 @@ class InGameScene(theme: Theme, mod: Mod) extends Scene {
 	canvasBox.getChildren.add(canvas)
 
 	private val playerPanel2 = new PlayerPanel(theme)
-	playerPanel2.style = theme("InGameScene.playerPanel2")
+	playerPanel2.style = playerPanel2.style.value + theme("InGameScene.playerPanel2")
 	mainBox.getChildren.add(playerPanel2)
 
 	// Listeners
