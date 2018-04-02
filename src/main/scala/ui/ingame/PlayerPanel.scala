@@ -60,4 +60,14 @@ class PlayerPanel(theme: Theme) extends VBox {
 	upkeepValueLabel.style = theme("PlayerPanel.upkeepValueLabel")
 	upkeepBox.children.add(upkeepValueLabel)
 
+	// Terrain
+
+	private val terrainBox = new VBox()
+	terrainBox.style = theme("PlayerPanel.terrainBox")
+	this.children.add(terrainBox)
+
+	private val terrainNameLabel = new Label("Grass")
+	terrainNameLabel.style = theme("PlayerPanel.terrainNameLabel")
+	terrainBox.children.add(terrainNameLabel)
+
 }
