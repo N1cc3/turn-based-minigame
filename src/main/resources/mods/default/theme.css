@@ -1,0 +1,113 @@
+.MainMenu-mainBox {
+    -fx-pref-height: 300px;
+    -fx-pref-width: 200px;
+    -fx-alignment: center;
+    -fx-spacing: 40px;
+}
+
+.MainMenu-newGameBtn {
+    -fx-font-size: 14px;
+    -fx-text-fill: green;
+}
+
+.MainMenu-loadGameBtn {
+    -fx-font-size: 14px;
+    -fx-text-fill: blue;
+}
+
+.MapSelect-mainBox {
+
+}
+
+.MapSelect-button1 {
+
+}
+
+.MapSelect-button2 {
+
+}
+
+.MapSelect-startGameBtn {
+
+}
+
+.InGameScene-mainBox {
+
+}
+
+.InGameScene-playerPanel1 {
+    -fx-background-color: lightblue;
+}
+
+.InGameScene-canvasBox {
+    -fx-pref-width: 800px;
+    -fx-background-color: lightgreen;
+}
+
+.InGameScene-playerPanel2 {
+    -fx-background-color: pink;
+}
+
+.PlayerPanel-mainBox {
+    -fx-pref-width: 180px;
+    -fx-alignment: top-center;
+    -fx-spacing: 20px;
+    -fx-font-size: 22px;
+}
+
+.PlayerPanel-playerLabel {
+
+}
+
+.PlayerPanel-phaseLabel {
+
+}
+
+.PlayerPanel-ecoBox {
+    -fx-spacing: 0px;
+    -fx-padding: 10px;
+}
+
+.PlayerPanel-terrainBox {
+    -fx-alignment: center;
+    -fx-pref-height: 100px;
+    -fx-background-color: green;
+}
+
+.PlayerPanel-terrainNameLabel {
+
+}
+
+.PlayerPanel-unitBox {
+    -fx-spacing: 0px;
+    -fx-padding: 10px;
+    -fx-alignment: top-center;
+}
+
+.PlayerPanel-unitNameLabel {
+
+}
+
+.PlayerPanel-unitHpBox {
+
+}
+
+.PlayerPanel-unitHpLabel {
+
+}
+
+.PlayerPanel-unitStatsBox {
+
+}
+
+.StatRow-mainBox {
+
+}
+
+.StatRow-statNameLabel {
+
+}
+
+.StatRow-statValueLabel {
+
+}

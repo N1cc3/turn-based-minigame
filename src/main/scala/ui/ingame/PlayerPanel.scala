@@ -2,26 +2,25 @@ package ui.ingame
 
 import scalafx.scene.control.Label
 import scalafx.scene.layout._
-import ui.Theme
 
-class PlayerPanel(theme: Theme) extends VBox {
+class PlayerPanel() extends VBox {
 
-	this.style = theme("PlayerPanel.mainBox")
+	this.styleClass += "PlayerPanel-mainBox"
 
 	// Player info
 
 	private val playerLabel = new Label("Player Name")
-	playerLabel.style = theme("PlayerPanel.playerLabel")
+	playerLabel.styleClass += "PlayerPanel-playerLabel"
 	this.children.add(playerLabel)
 
 	private val phaseLabel = new Label("Battle Phase")
-	phaseLabel.style = theme("PlayerPanel.phaseLabel")
+	phaseLabel.styleClass += "PlayerPanel-phaseLabel"
 	this.children.add(phaseLabel)
 
 	// Economy
 
 	private val ecoBox = new VBox()
-	ecoBox.style = theme("PlayerPanel.ecoBox")
+	ecoBox.styleClass += "PlayerPanel-ecoBox"
 	this.children.add(ecoBox)
 
 	private val goldRow = new StatRow("Gold")
@@ -36,33 +35,33 @@ class PlayerPanel(theme: Theme) extends VBox {
 	// Terrain
 
 	private val terrainBox = new VBox()
-	terrainBox.style = theme("PlayerPanel.terrainBox")
+	terrainBox.styleClass += "PlayerPanel-terrainBox"
 	this.children.add(terrainBox)
 
 	private val terrainNameLabel = new Label("Grass")
-	terrainNameLabel.style = theme("PlayerPanel.terrainNameLabel")
+	terrainNameLabel.styleClass += "PlayerPanel-terrainNameLabel"
 	terrainBox.children.add(terrainNameLabel)
 
 	// Unit
 
 	private val unitBox = new VBox()
-	unitBox.style = theme("PlayerPanel.unitBox")
+	unitBox.styleClass += "PlayerPanel-unitBox"
 	this.children.add(unitBox)
 
 	private val unitNameLabel = new Label("Ballista")
-	unitNameLabel.style = theme("PlayerPanel.unitNameLabel")
+	unitNameLabel.styleClass += "PlayerPanel-unitNameLabel"
 	unitBox.children.add(unitNameLabel)
 
 	private val unitHpBox = new HBox()
-	unitHpBox.style = theme("PlayerPanel.unitHpBox")
+	unitHpBox.styleClass += "PlayerPanel-unitHpBox"
 	unitBox.children.add(unitHpBox)
 
 	private val unitHpLabel = new Label("12 / 15")
-	unitHpLabel.style = theme("PlayerPanel.unitHpLabel")
+	unitHpLabel.styleClass += "PlayerPanel-unitHpLabel"
 	unitBox.children.add(unitHpLabel)
 
 	private val unitStatsBox = new VBox()
-	unitStatsBox.style = theme("PlayerPanel.unitStatsBox")
+	unitStatsBox.styleClass += "PlayerPanel-unitStatsBox"
 	unitBox.children.add(unitStatsBox)
 
 	private val attackRow = new StatRow("Attack")

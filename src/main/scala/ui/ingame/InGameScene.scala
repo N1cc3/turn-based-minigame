@@ -3,20 +3,19 @@ package ui.ingame
 import game.Mod
 import scalafx.scene.Scene
 import scalafx.scene.layout.{HBox, VBox}
-import ui.Theme
 
-class InGameScene(theme: Theme, mod: Mod) extends Scene {
+class InGameScene(mod: Mod) extends Scene {
 
 	private val mainBox = new HBox()
 	this.content.add(mainBox)
-	mainBox.style = theme("InGameScene.mainBox")
+	mainBox.styleClass += "InGameScene-mainBox"
 
-	private val playerPanel1 = new PlayerPanel(theme)
-	playerPanel1.style = playerPanel1.style.value + theme("InGameScene.playerPanel1")
+	private val playerPanel1 = new PlayerPanel
+	playerPanel1.styleClass += "InGameScene-playerPanel1"
 	mainBox.getChildren.add(playerPanel1)
 
 	private val canvasBox = new VBox()
-	canvasBox.style = theme("InGameScene.canvasBox")
+	canvasBox.styleClass += "InGameScene-canvasBox"
 	mainBox.getChildren.add(canvasBox)
 
 	val canvas = new GameCanvas()
@@ -25,8 +24,8 @@ class InGameScene(theme: Theme, mod: Mod) extends Scene {
 	canvas.drawUnits(gameState.units.toList, gameState.map)
 	canvasBox.getChildren.add(canvas)
 
-	private val playerPanel2 = new PlayerPanel(theme)
-	playerPanel2.style = playerPanel2.style.value + theme("InGameScene.playerPanel2")
+	private val playerPanel2 = new PlayerPanel
+	playerPanel2.styleClass += "InGameScene-playerPanel2"
 	mainBox.getChildren.add(playerPanel2)
 
 	// Listeners

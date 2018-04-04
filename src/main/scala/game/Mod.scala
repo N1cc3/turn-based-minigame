@@ -6,7 +6,6 @@ import com.github.tototoshi.csv.CSVReader
 import game.data._
 import hexgrid.Hex
 import scalafx.scene.image.Image
-import ui.Theme
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -14,8 +13,6 @@ import scala.collection.mutable.ListBuffer
 class Mod(val name: String) {
 
 	val modPath = getClass.getResource("/mods/" + name).getPath + "/"
-
-	val theme = new Theme(modPath + "theme.csv")
 
 	val scenarioNames = getScenarios()
 
