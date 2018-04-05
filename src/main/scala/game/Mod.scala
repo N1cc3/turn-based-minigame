@@ -12,9 +12,9 @@ import scala.collection.mutable.ListBuffer
 
 class Mod(val name: String) {
 
-	val modPath = getClass.getResource("/mods/" + name).getPath + "/"
+	val modPath: String = getClass.getResource("/mods/" + name).getPath + "/"
 
-	val scenarioNames = getScenarios()
+	val scenarioNames: Seq[String] = getScenarios
 
 	// Effects
 
@@ -107,7 +107,7 @@ class Mod(val name: String) {
 
 	private def getImage(name: String) = new Image("file://" + modPath + name)
 
-	private def getScenarios(): Seq[String] = {
+	private def getScenarios: Seq[String] = {
 		val d = new File(modPath + "/scenarios")
 		if (d.exists && d.isDirectory) {
 			d.listFiles.filter(_.isDirectory).map(_.getName)

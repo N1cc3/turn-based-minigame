@@ -17,8 +17,8 @@ class MapSelect() extends Scene {
 	button2.styleClass += "MapSelect-button2"
 	button1.setSelected(true)
 	private val toggleGroup = new ToggleGroup()
-	toggleGroup.getToggles.add(button1);
-	toggleGroup.getToggles.add(button2);
+	toggleGroup.getToggles.add(button1)
+	toggleGroup.getToggles.add(button2)
 	mainBox.children.addAll(button1, button2)
 
 	private val startGameBtn = new Button("Start Game")
@@ -27,6 +27,6 @@ class MapSelect() extends Scene {
 
 	// Events
 
-	def setStartGameEvent(e: EventHandler[ActionEvent]) = startGameBtn.setOnAction(e)
+	def setStartGameEvent(e: EventHandler[ActionEvent]): Unit = startGameBtn.setOnAction(e)
 
 }

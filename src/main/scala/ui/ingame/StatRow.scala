@@ -23,6 +23,8 @@ class StatRow(statName: String) extends GridPane {
 	statValueLabel.styleClass += "StatRow-statValueLabel"
 	this.add(statValueLabel, 1, 0)
 
-	def value_=(value: Int) = statValueLabel.text = value.toString
+	def value_=(value: Int) {
+		statValueLabel.text = value.toString
+	}
 
 }

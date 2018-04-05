@@ -28,7 +28,7 @@ class Unit(val unitType: UnitType, val player: Player) {
 
 	// Events
 
-	def takesDamage(damage: Int, skipArmor: Boolean = false) = {
+	def takesDamage(damage: Int, skipArmor: Boolean = false) {
 		if (skipArmor) {
 			this.hp -= damage
 		} else {
@@ -39,7 +39,7 @@ class Unit(val unitType: UnitType, val player: Player) {
 
 	// Actions
 
-	def attacks(target: Unit) = {
+	def attacks(target: Unit) {
 		target.takesDamage(this.attack)
 		this.takesDamage(target.defence)
 	}

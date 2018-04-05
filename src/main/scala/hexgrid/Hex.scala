@@ -6,7 +6,7 @@ import scala.math._
 
 class Hex(val x: Int, val y: Int) {
 
-	val parity = y & 1
+	val parity: Int = y & 1
 
 	val even_directions = List(
 		(1, 0),

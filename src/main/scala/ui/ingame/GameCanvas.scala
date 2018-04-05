@@ -17,7 +17,7 @@ class GameCanvas extends Canvas {
 		min(x, y)
 	}
 
-	def drawMap(map: Map) = {
+	def drawMap(map: Map) {
 		val size = hexSize(map)
 		gc.clearRect(0, 0, this.getWidth, this.getHeight)
 		for (y <- 0 until map.sizeY) {
@@ -29,7 +29,7 @@ class GameCanvas extends Canvas {
 		}
 	}
 
-	def drawUnits(units: List[Unit], map: Map) = {
+	def drawUnits(units: List[Unit], map: Map) {
 		val size = hexSize(map)
 		for (unit <- units) {
 			val position = unit.position.drawingPosition(size)

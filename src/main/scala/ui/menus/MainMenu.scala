@@ -21,8 +21,8 @@ class MainMenu() extends Scene {
 
 	// Events
 
-	def setNewGameEvent(e: EventHandler[ActionEvent]) = newGameBtn.setOnAction(e)
+	def setNewGameEvent(e: EventHandler[ActionEvent]): Unit = newGameBtn.setOnAction(e)
 
-	def setLoadGameEvent(e: EventHandler[ActionEvent]) = loadGameBtn.setOnAction(e)
+	def setLoadGameEvent(e: EventHandler[ActionEvent]): Unit = loadGameBtn.setOnAction(e)
 
 }

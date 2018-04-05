@@ -17,10 +17,10 @@ object Launcher extends JFXApp {
 	}
 
 	modSelect.setSelectModEvent(handle {
-		stage = new App(new Mod(modSelect.getSelectedMod()))
+		stage = new App(new Mod(modSelect.getSelectedMod))
 	})
 
-	private def getMods(): Seq[String] = {
+	private def getMods: Seq[String] = {
 		val d = new File(getClass.getResource("/mods/").getPath)
 		if (d.exists && d.isDirectory) {
 			d.listFiles.filter(_.isDirectory).map(_.getName)

@@ -1,6 +1,7 @@
 package ui.ingame
 
 import game.Mod
+import game.data.GameState
 import scalafx.scene.Scene
 import scalafx.scene.input.KeyCode
 import scalafx.scene.layout.{HBox, VBox}
@@ -20,7 +21,7 @@ class InGameScene(mod: Mod) extends Scene {
 	mainBox.getChildren.add(canvasBox)
 
 	val canvas = new GameCanvas()
-	val gameState = mod.loadScenario(mod.scenarioNames.head)
+	val gameState: GameState = mod.loadScenario(mod.scenarioNames.head)
 	canvas.drawMap(gameState.map)
 	canvas.drawUnits(gameState.units.toList, gameState.map)
 	canvasBox.getChildren.add(canvas)
