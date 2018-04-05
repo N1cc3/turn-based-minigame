@@ -12,7 +12,7 @@ class App(mod: Mod = new Mod("default")) extends PrimaryStage {
 	private val mapSelect = new MapSelect()
 	private val inGameScene = new InGameScene(mod)
 
-	StyleManager.getInstance().addUserAgentStylesheet("file://" + mod.modPath + "theme.css")
+	StyleManager.getInstance().addUserAgentStylesheet(mod.cssFilePath)
 
 	title = "Hexagonal Turn Based Strategy Game: " + mod.name
 	scene = mainMenu

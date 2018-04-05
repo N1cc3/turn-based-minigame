@@ -14,6 +14,8 @@ class Mod(val name: String) {
 
 	val modPath: String = getClass.getResource("/mods/" + name).getPath + "/"
 
+	val cssFilePath: String = "file://" + modPath + "theme.css"
+
 	val scenarioNames: Seq[String] = getScenarios
 
 	// Effects
