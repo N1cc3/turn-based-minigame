@@ -2,6 +2,7 @@ package ui.ingame
 
 import game.Mod
 import scalafx.scene.Scene
+import scalafx.scene.input.KeyCode
 import scalafx.scene.layout.{HBox, VBox}
 
 class InGameScene(mod: Mod) extends Scene {
@@ -40,6 +41,23 @@ class InGameScene(mod: Mod) extends Scene {
 		canvas.height = newValue.doubleValue()
 		canvas.drawMap(gameState.map)
 		canvas.drawUnits(gameState.units.toList, gameState.map)
+	})
+
+	this.setOnKeyPressed(ke => {
+		val char = ke.getCode
+		char match {
+			// Player 0
+			case KeyCode.Up.delegate => println(char.getName)
+			case KeyCode.Left.delegate => println(char.getName)
+			case KeyCode.Down.delegate => println(char.getName)
+			case KeyCode.Right.delegate => println(char.getName)
+			// Player 1
+			case KeyCode.W.delegate => println(char.getName)
+			case KeyCode.A.delegate => println(char.getName)
+			case KeyCode.S.delegate => println(char.getName)
+			case KeyCode.D.delegate => println(char.getName)
+			case _ => println(char.getName)
+		}
 	})
 
 }
