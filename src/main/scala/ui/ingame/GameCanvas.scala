@@ -6,6 +6,7 @@ import scalafx.geometry.Point2D
 import scalafx.scene.canvas.Canvas
 import scalafx.scene.paint.Color
 
+import scala.collection.mutable.ArrayBuffer
 import scala.math.{min, sqrt}
 
 
@@ -43,14 +44,17 @@ class GameCanvas extends Canvas {
 		val size = hexSize(map)
 		val position = hex.drawingPosition(size)
 		val center = new Point2D(position.x + size * sqrt(3) / 2, position.y + size * 2 / 2)
+		val corners = new ArrayBuffer[Point2D]
+		gc.setStroke(Color.rgb(0, 0, 255, 0.5))
 		for (i <- 0 until 6) {
 			val corner1 = hex.corner(center, size, i)
 			val corner2 = hex.corner(center, size, i + 1 % 6)
-			gc.setFill(Color.Blue)
-			gc.setStroke(Color.Blue)
+			corners += corner1
 			gc.setLineWidth(size / 20)
 			gc.strokeLine(corner1.x, corner1.y, corner2.x, corner2.y)
 		}
+		gc.setFill(Color.rgb(0, 0, 255, 0.1))
+		gc.fillPolygon(corners.map(_.x).toArray, corners.map(_.y).toArray, 6)
 	}
 
 }
