@@ -2,6 +2,7 @@ package ui.ingame
 
 import game.Mod
 import game.data.GameState
+import hexgrid.Hex
 import scalafx.scene.Scene
 import scalafx.scene.input.KeyCode
 import scalafx.scene.layout.{HBox, VBox}
@@ -24,6 +25,7 @@ class InGameScene(mod: Mod) extends Scene {
 	val gameState: GameState = mod.loadScenario(mod.scenarioNames.head)
 	canvas.drawMap(gameState.map)
 	canvas.drawUnits(gameState.units.toList, gameState.map)
+	canvas.drawSelection(gameState.map, new Hex(0, 0))
 	canvasBox.getChildren.add(canvas)
 
 	private val playerPanel2 = new PlayerPanel
@@ -36,12 +38,14 @@ class InGameScene(mod: Mod) extends Scene {
 		canvas.width = newValue.doubleValue() - playerPanel1.getWidth - playerPanel2.getWidth
 		canvas.drawMap(gameState.map)
 		canvas.drawUnits(gameState.units.toList, gameState.map)
+		canvas.drawSelection(gameState.map, new Hex(0, 0))
 	})
 
 	this.heightProperty.addListener((_, _, newValue) => {
 		canvas.height = newValue.doubleValue()
 		canvas.drawMap(gameState.map)
 		canvas.drawUnits(gameState.units.toList, gameState.map)
+		canvas.drawSelection(gameState.map, new Hex(0, 0))
 	})
 
 	this.setOnKeyPressed(ke => {

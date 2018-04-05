@@ -46,7 +46,7 @@ class Hex(val x: Int, val y: Int) {
 	}
 
 	def drawingPosition(size: Double): Point2D = {
-		new Point2D(size * x + size * parity / 2, size * y * 3 / 4)
+		new Point2D(size * sqrt(3) * x + size * sqrt(3) * parity / 2, size * 2 * y * 3 / 4)
 	}
 
 	def corner(center: Point2D, size: Double, i: Int): Point2D = {

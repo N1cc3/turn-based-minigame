@@ -40,7 +40,6 @@
 }
 
 .InGameScene-canvasBox {
-    -fx-pref-width: 800px;
     -fx-background-color: lightgreen;
 }
 
