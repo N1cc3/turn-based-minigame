@@ -4,7 +4,7 @@ import scala.collection.mutable.ListBuffer
 
 class GameState(
 								 val map: Map,
-								 val players: Seq[Player],
+								 val players: Array[Player],
 							 ) {
 
 	val units = new ListBuffer[Unit]

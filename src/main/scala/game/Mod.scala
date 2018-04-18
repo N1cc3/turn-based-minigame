@@ -6,9 +6,9 @@ import com.github.tototoshi.csv.CSVReader
 import game.data._
 import hexgrid.Hex
 import scalafx.scene.image.Image
+import scalafx.scene.paint.Color
 
 import scala.collection.mutable
-import scala.collection.mutable.ListBuffer
 
 class Mod(val name: String) {
 
@@ -86,9 +86,7 @@ class Mod(val name: String) {
 			scenario.terrain(x)(y) = terrainTypes(terrain)
 		}
 
-		val players = new ListBuffer[Player]
-		players += new Player()
-		players += new Player()
+		val players = Array(new Player(Color.Blue), new Player(Color.Red))
 
 		val gameState = new GameState(scenario, players)
 

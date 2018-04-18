@@ -1,7 +1,7 @@
 package ui.ingame
 
 import game.Mod
-import game.data.GameState
+import game.data.{GameState, Player}
 import hexgrid.Hex
 import scalafx.scene.Scene
 import scalafx.scene.input.KeyCode
@@ -10,23 +10,6 @@ import scalafx.scene.layout.{HBox, VBox}
 import scala.math.{max, min}
 
 class InGameScene(mod: Mod) extends Scene {
-
-	private var _selectionX: Int = 0
-	private var _selectionY: Int = 0
-
-	def selectionX: Int = _selectionX
-
-	def selectionY: Int = _selectionY
-
-	def selectionX_=(value: Int) {
-		_selectionX = min(gameState.map.sizeX - 1, max(0, value))
-		drawGame()
-	}
-
-	def selectionY_=(value: Int) {
-		_selectionY = min(gameState.map.sizeY - 1, max(0, value))
-		drawGame()
-	}
 
 	private val mainBox = new HBox()
 	this.content.add(mainBox)
@@ -42,48 +25,57 @@ class InGameScene(mod: Mod) extends Scene {
 
 	val canvas = new GameCanvas()
 	val gameState: GameState = mod.loadScenario(mod.scenarioNames.head)
-	canvas.drawMap(gameState.map)
-	canvas.drawUnits(gameState.units.toList, gameState.map)
-	canvas.drawSelection(gameState.map, new Hex(0, 0))
 	canvasBox.getChildren.add(canvas)
 
 	private val playerPanel2 = new PlayerPanel
 	playerPanel2.styleClass += "InGameScene-playerPanel2"
 	mainBox.getChildren.add(playerPanel2)
 
-	def drawGame() {
-		canvas.drawMap(gameState.map)
-		canvas.drawUnits(gameState.units.toList, gameState.map)
-		canvas.drawSelection(gameState.map, new Hex(selectionX, selectionY))
-	}
+	canvas.drawGame(gameState)
 
 	// Listeners
 
 	this.widthProperty.addListener((_, _, newValue) => {
 		canvas.width = newValue.doubleValue() - playerPanel1.getWidth - playerPanel2.getWidth
-		drawGame()
+		canvas.drawGame(gameState)
 	})
 
 	this.heightProperty.addListener((_, _, newValue) => {
 		canvas.height = newValue.doubleValue()
-		drawGame()
+		canvas.drawGame(gameState)
 	})
 
 	this.setOnKeyPressed(ke => {
+		val player1 = gameState.players.head
+		val player2 = gameState.players(1)
 		val keyCode = ke.getCode
 		keyCode match {
-			// Player 0
-			case KeyCode.Up.delegate => selectionY = selectionY - 1
-			case KeyCode.Left.delegate => selectionX = selectionX - 1
-			case KeyCode.Down.delegate => selectionY = selectionY + 1
-			case KeyCode.Right.delegate => selectionX = selectionX + 1
 			// Player 1
-			case KeyCode.W.delegate => selectionY = selectionY - 1
-			case KeyCode.A.delegate => selectionX = selectionX - 1
-			case KeyCode.S.delegate => selectionY = selectionY + 1
-			case KeyCode.D.delegate => selectionX = selectionX + 1
-			case _ => println(keyCode.getName)
+			case KeyCode.Up.delegate => moveCursor(player1, 0, -1)
+			case KeyCode.Left.delegate => moveCursor(player1, -1, 0)
+			case KeyCode.Down.delegate => moveCursor(player1, 0, 1)
+			case KeyCode.Right.delegate => moveCursor(player1, 1, 0)
+			// Player 2
+			case KeyCode.W.delegate => moveCursor(player2, 0, -1)
+			case KeyCode.A.delegate => moveCursor(player2, -1, 0)
+			case KeyCode.S.delegate => moveCursor(player2, 0, 1)
+			case KeyCode.D.delegate => moveCursor(player2, 1, 0)
+			case _ =>
 		}
+
+		canvas.drawGame(gameState)
 	})
+
+	// Helper functions
+
+	private def moveCursor(player: Player, moveX: Int, moveY: Int) {
+		if (player.cursor.isDefined) {
+			val x = min(gameState.map.sizeX - 1, max(0, player.cursor.get.x + moveX))
+			val y = min(gameState.map.sizeY - 1, max(0, player.cursor.get.y + moveY))
+			player.cursor = Option(new Hex(x, y))
+		} else {
+			player.cursor = Option(new Hex(0, 0))
+		}
+	}
 
 }

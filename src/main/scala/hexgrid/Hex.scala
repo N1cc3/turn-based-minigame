@@ -2,6 +2,7 @@ package hexgrid
 
 import scalafx.geometry.Point2D
 
+import scala.collection.mutable.ArrayBuffer
 import scala.math._
 
 class Hex(val x: Int, val y: Int) {
@@ -53,6 +54,15 @@ class Hex(val x: Int, val y: Int) {
 		val angle_deg = 60 * i + 30
 		val angle_rad = Pi / 180 * angle_deg
 		new Point2D(center.x + size * cos(angle_rad), center.y + size * sin(angle_rad))
+	}
+
+	def corners(center: Point2D, size: Double): Array[Point2D] = {
+		val corners = new ArrayBuffer[Point2D]
+		for (i <- 0 until 6) {
+			val corner = this.corner(center, size, i)
+			corners += corner
+		}
+		corners.toArray
 	}
 
 }
