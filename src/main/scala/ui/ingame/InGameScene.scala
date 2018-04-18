@@ -55,11 +55,15 @@ class InGameScene(mod: Mod) extends Scene {
 			case KeyCode.Left.delegate => moveCursor(player1, -1, 0)
 			case KeyCode.Down.delegate => moveCursor(player1, 0, 1)
 			case KeyCode.Right.delegate => moveCursor(player1, 1, 0)
+			case KeyCode.Control.delegate => player1.selection = player1.cursor
+
 			// Player 2
 			case KeyCode.W.delegate => moveCursor(player2, 0, -1)
 			case KeyCode.A.delegate => moveCursor(player2, -1, 0)
 			case KeyCode.S.delegate => moveCursor(player2, 0, 1)
 			case KeyCode.D.delegate => moveCursor(player2, 1, 0)
+			case KeyCode.Digit1.delegate => player2.selection = player2.cursor
+
 			case _ =>
 		}
 

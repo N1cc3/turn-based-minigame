@@ -16,7 +16,10 @@ class GameCanvas extends Canvas {
 	def drawGame(gameState: GameState) {
 		this.drawMap(gameState.map)
 		this.drawUnits(gameState.units.toList, gameState.map)
-		gameState.players.foreach(player => player.cursor.foreach(cursor => this.drawSelection(gameState.map, cursor, player.color)))
+		gameState.players.foreach(player => {
+			player.cursor.foreach(this.drawCursor(gameState.map, _, player.color))
+			player.selection.foreach(this.drawSelection(gameState.map, _, player.color))
+		})
 	}
 
 	def hexSize(map: Map): Double = {
@@ -42,6 +45,18 @@ class GameCanvas extends Canvas {
 		for (unit <- units) {
 			val position = unit.position.drawingPosition(size)
 			gc.drawImage(unit.unitType.image, position.x, position.y, size * sqrt(3), size * 2)
+		}
+	}
+
+	private def drawCursor(map: Map, hex: Hex, color: Color) {
+		val size = hexSize(map)
+		val position = hex.drawingPosition(size)
+		val center = new Point2D(position.x + size * sqrt(3) / 2, position.y + size * 2 / 2)
+		val corners = hex.corners(center, size)
+		gc.setStroke(color.opacity(0.5))
+		for (i <- 0 until 6) {
+			gc.setLineWidth(size / 40)
+			gc.strokeLine(corners(i).x, corners(i).y, corners((i + 1) % 6).x, corners((i + 1) % 6).y)
 		}
 	}
 
