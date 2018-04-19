@@ -70,7 +70,6 @@
 .PlayerPanel-terrainBox {
     -fx-alignment: center;
     -fx-pref-height: 100px;
-    -fx-background-color: green;
 }
 
 .PlayerPanel-terrainNameLabel {

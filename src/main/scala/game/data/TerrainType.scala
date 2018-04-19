@@ -7,4 +7,5 @@ class TerrainType(
 									 val moveCost: Int,
 									 val effects: List[Effect],
 									 val image: Image,
+									 val color: String,
 								 )

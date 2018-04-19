@@ -34,13 +34,8 @@ class PlayerPanel() extends VBox {
 
 	// Terrain
 
-	private val terrainBox = new VBox()
-	terrainBox.styleClass += "PlayerPanel-terrainBox"
-	this.children.add(terrainBox)
-
-	private val terrainNameLabel = new Label("Grass")
-	terrainNameLabel.styleClass += "PlayerPanel-terrainNameLabel"
-	terrainBox.children.add(terrainNameLabel)
+	val terrainInfo = new TerrainInfo()
+	this.children.add(terrainInfo)
 
 	// Unit
 

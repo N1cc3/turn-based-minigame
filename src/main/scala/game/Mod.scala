@@ -43,7 +43,8 @@ class Mod(val name: String) {
 		val moveCost = terrainTypeData("MOVE_COST").toInt
 		val effects = List.empty[Effect]
 		val image = getImage(terrainTypeData("IMAGE"))
-		terrainTypes += name -> new TerrainType(name, moveCost, effects, image)
+		val color = terrainTypeData("COLOR")
+		terrainTypes += name -> new TerrainType(name, moveCost, effects, image, color)
 	}
 
 	// Units

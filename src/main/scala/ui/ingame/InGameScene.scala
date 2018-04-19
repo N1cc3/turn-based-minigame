@@ -67,6 +67,8 @@ class InGameScene(mod: Mod) extends Scene {
 			case _ =>
 		}
 
+		player1.cursor.foreach(cursor => playerPanel1.terrainInfo.show(gameState.map.terrain(cursor.x)(cursor.y)))
+		player2.cursor.foreach(cursor => playerPanel2.terrainInfo.show(gameState.map.terrain(cursor.x)(cursor.y)))
 		canvas.drawGame(gameState)
 	})
 
