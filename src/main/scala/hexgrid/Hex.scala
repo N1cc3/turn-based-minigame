@@ -65,4 +65,6 @@ class Hex(val x: Int, val y: Int) {
 		corners.toArray
 	}
 
+	def equals(that: Hex): Boolean = this.x == that.x && this.y == that.y
+
 }

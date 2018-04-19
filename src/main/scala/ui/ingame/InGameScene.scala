@@ -51,24 +51,32 @@ class InGameScene(mod: Mod) extends Scene {
 		val keyCode = ke.getCode
 		keyCode match {
 			// Player 1
-			case KeyCode.Up.delegate => moveCursor(player1, 0, -1)
-			case KeyCode.Left.delegate => moveCursor(player1, -1, 0)
-			case KeyCode.Down.delegate => moveCursor(player1, 0, 1)
-			case KeyCode.Right.delegate => moveCursor(player1, 1, 0)
-			case KeyCode.Control.delegate => player1.selection = player1.cursor
+			case KeyCode.W.delegate => moveCursor(player1, 0, -1)
+			case KeyCode.A.delegate => moveCursor(player1, -1, 0)
+			case KeyCode.S.delegate => moveCursor(player1, 0, 1)
+			case KeyCode.D.delegate => moveCursor(player1, 1, 0)
+			case KeyCode.Digit1.delegate => player1.selection = player1.cursor
 
 			// Player 2
-			case KeyCode.W.delegate => moveCursor(player2, 0, -1)
-			case KeyCode.A.delegate => moveCursor(player2, -1, 0)
-			case KeyCode.S.delegate => moveCursor(player2, 0, 1)
-			case KeyCode.D.delegate => moveCursor(player2, 1, 0)
-			case KeyCode.Digit1.delegate => player2.selection = player2.cursor
+			case KeyCode.Up.delegate => moveCursor(player2, 0, -1)
+			case KeyCode.Left.delegate => moveCursor(player2, -1, 0)
+			case KeyCode.Down.delegate => moveCursor(player2, 0, 1)
+			case KeyCode.Right.delegate => moveCursor(player2, 1, 0)
+			case KeyCode.Control.delegate => player2.selection = player2.cursor
 
 			case _ =>
 		}
 
-		player1.cursor.foreach(cursor => playerPanel1.terrainInfo.show(gameState.map.terrain(cursor.x)(cursor.y)))
-		player2.cursor.foreach(cursor => playerPanel2.terrainInfo.show(gameState.map.terrain(cursor.x)(cursor.y)))
+		player1.cursor.foreach(cursor => {
+			playerPanel1.terrainInfo.show(gameState.map.terrain(cursor.x)(cursor.y))
+			playerPanel1.unitInfo.clear()
+			gameState.units.foreach(unit => if (unit.position.equals(cursor)) playerPanel1.unitInfo.show(unit))
+		})
+		player2.cursor.foreach(cursor => {
+			playerPanel2.terrainInfo.show(gameState.map.terrain(cursor.x)(cursor.y))
+			playerPanel2.unitInfo.clear()
+			gameState.units.foreach(unit => if (unit.position.equals(cursor)) playerPanel2.unitInfo.show(unit))
+		})
 		canvas.drawGame(gameState)
 	})
 

@@ -67,34 +67,34 @@
     -fx-padding: 10px;
 }
 
-.PlayerPanel-terrainBox {
+.PlayerPanel-terrainInfo {
     -fx-alignment: center;
     -fx-pref-height: 100px;
 }
 
-.PlayerPanel-terrainNameLabel {
+.TerrainInfo-terrainNameLabel {
 
 }
 
-.PlayerPanel-unitBox {
+.PlayerPanel-unitInfo {
     -fx-spacing: 0px;
     -fx-padding: 10px;
     -fx-alignment: top-center;
 }
 
-.PlayerPanel-unitNameLabel {
+.UnitInfo-unitNameLabel {
 
 }
 
-.PlayerPanel-unitHpBox {
+.UnitInfo-unitHpBox {
 
 }
 
-.PlayerPanel-unitHpLabel {
+.UnitInfo-unitHpLabel {
 
 }
 
-.PlayerPanel-unitStatsBox {
+.UnitInfo-unitStatsBox {
 
 }
 

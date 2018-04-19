@@ -9,10 +9,8 @@ import scalafx.scene.paint.Color
 
 class TerrainInfo extends VBox {
 
-	this.styleClass += "PlayerPanel-terrainBox"
-
 	private val terrainNameLabel = new Label
-	terrainNameLabel.styleClass += "PlayerPanel-terrainNameLabel"
+	terrainNameLabel.styleClass += "TerrainInfo-terrainNameLabel"
 	this.children.add(terrainNameLabel)
 
 	def show(terrainType: TerrainType) {

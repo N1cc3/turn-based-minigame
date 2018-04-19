@@ -35,43 +35,13 @@ class PlayerPanel() extends VBox {
 	// Terrain
 
 	val terrainInfo = new TerrainInfo()
+	terrainInfo.styleClass += "PlayerPanel-terrainInfo"
 	this.children.add(terrainInfo)
 
 	// Unit
 
-	private val unitBox = new VBox()
-	unitBox.styleClass += "PlayerPanel-unitBox"
-	this.children.add(unitBox)
-
-	private val unitNameLabel = new Label("Ballista")
-	unitNameLabel.styleClass += "PlayerPanel-unitNameLabel"
-	unitBox.children.add(unitNameLabel)
-
-	private val unitHpBox = new HBox()
-	unitHpBox.styleClass += "PlayerPanel-unitHpBox"
-	unitBox.children.add(unitHpBox)
-
-	private val unitHpLabel = new Label("12 / 15")
-	unitHpLabel.styleClass += "PlayerPanel-unitHpLabel"
-	unitBox.children.add(unitHpLabel)
-
-	private val unitStatsBox = new VBox()
-	unitStatsBox.styleClass += "PlayerPanel-unitStatsBox"
-	unitBox.children.add(unitStatsBox)
-
-	private val attackRow = new StatRow("Attack")
-	unitStatsBox.children.add(attackRow)
-
-	private val defenceRow = new StatRow("Defence")
-	unitStatsBox.children.add(defenceRow)
-
-	private val armorRow = new StatRow("Armor")
-	unitStatsBox.children.add(armorRow)
-
-	private val rangeRow = new StatRow("Range")
-	unitStatsBox.children.add(rangeRow)
-
-	private val speedRow = new StatRow("Speed")
-	unitStatsBox.children.add(speedRow)
+	val unitInfo = new UnitInfo()
+	unitInfo.styleClass += "PlayerPanel-unitInfo"
+	this.children.add(unitInfo)
 
 }
