@@ -16,19 +16,17 @@
 }
 
 .MapSelect-mainBox {
-
+    -fx-pref-height: 300px;
+    -fx-pref-width: 200px;
+    -fx-spacing: 10px;
 }
 
-.MapSelect-button1 {
-
-}
-
-.MapSelect-button2 {
+.MapSelect-button {
 
 }
 
 .MapSelect-startGameBtn {
-
+    -fx-alignment: bottom-right;
 }
 
 .InGameScene-mainBox {

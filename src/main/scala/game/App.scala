@@ -9,7 +9,7 @@ import ui.menus.{MainMenu, MapSelect}
 class App(mod: Mod = new Mod("default")) extends PrimaryStage {
 
 	private val mainMenu = new MainMenu()
-	private val mapSelect = new MapSelect()
+	private val mapSelect = new MapSelect(mod)
 	private val inGameScene = new InGameScene(mod)
 
 	StyleManager.getInstance().addUserAgentStylesheet(mod.cssFilePath)
