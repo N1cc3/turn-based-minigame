@@ -4,9 +4,10 @@ import game.Mod
 import game.data.{GameState, Player}
 import hexgrid.Hex
 import scalafx.scene.Scene
-import scalafx.scene.input.KeyCode
 import scalafx.scene.layout.{HBox, VBox}
+import ui.{Command, Controls}
 
+import scala.collection.mutable
 import scala.math.{max, min}
 
 class InGameScene(mod: Mod) extends Scene {
@@ -23,13 +24,15 @@ class InGameScene(mod: Mod) extends Scene {
 	canvasBox.styleClass += "InGameScene-canvasBox"
 	mainBox.getChildren.add(canvasBox)
 
-	val canvas = new GameCanvas()
-	val gameState: GameState = mod.loadScenario(mod.scenarioNames.head)
-	canvasBox.getChildren.add(canvas)
-
 	private val playerPanel2 = new PlayerPanel
 	playerPanel2.styleClass += "InGameScene-playerPanel2"
 	mainBox.getChildren.add(playerPanel2)
+
+	val playerPanels = Array(playerPanel1, playerPanel2)
+
+	val canvas = new GameCanvas()
+	val gameState: GameState = mod.loadScenario(mod.scenarioNames.head)
+	canvasBox.getChildren.add(canvas)
 
 	canvas.drawGame(gameState)
 
@@ -45,46 +48,40 @@ class InGameScene(mod: Mod) extends Scene {
 		canvas.drawGame(gameState)
 	})
 
-	this.setOnKeyPressed(ke => {
-		val player1 = gameState.players.head
-		val player2 = gameState.players(1)
-		val keyCode = ke.getCode
-		keyCode match {
-			// Player 1
-			case KeyCode.W.delegate => moveCursor(player1, 0, -1)
-			case KeyCode.A.delegate => moveCursor(player1, -1, 0)
-			case KeyCode.S.delegate => moveCursor(player1, 0, 1)
-			case KeyCode.D.delegate => moveCursor(player1, 1, 0)
-			case KeyCode.Digit1.delegate => select(player1)
-			case KeyCode.Q.delegate => cancel(player1)
-
-			// Player 2
-			case KeyCode.Up.delegate => moveCursor(player2, 0, -1)
-			case KeyCode.Left.delegate => moveCursor(player2, -1, 0)
-			case KeyCode.Down.delegate => moveCursor(player2, 0, 1)
-			case KeyCode.Right.delegate => moveCursor(player2, 1, 0)
-			case KeyCode.Control.delegate => select(player2)
-			case KeyCode.Shift.delegate => cancel(player2)
-
-			case _ =>
-		}
-
-		player1.cursor.foreach(cursor => {
-			playerPanel1.terrainInfo.show(gameState.map.terrain(cursor.x)(cursor.y))
-			playerPanel1.unitInfo.clear()
-			gameState.units.foreach(unit => if (unit.position.equals(cursor)) playerPanel1.unitInfo.show(unit))
-		})
-		player2.cursor.foreach(cursor => {
-			playerPanel2.terrainInfo.show(gameState.map.terrain(cursor.x)(cursor.y))
-			playerPanel2.unitInfo.clear()
-			gameState.units.foreach(unit => if (unit.position.equals(cursor)) playerPanel2.unitInfo.show(unit))
-		})
-		canvas.drawGame(gameState)
-	})
-
 	// Player actions
 
-	var state: UiState = NoSelection
+	private val uiState = mutable.Map[Player, UiState]().empty
+	gameState.players.foreach(uiState += _ -> NoSelection)
+
+	val controls = new Controls
+
+	this.setOnKeyPressed(ke => {
+
+		val input: Option[(Int, Command.Value)] = controls.get(ke.getCode.getName)
+
+		input.foreach(validInput => {
+			val playerNumber: Int = validInput._1
+			val player: Player = gameState.players(playerNumber)
+			val command: Command.Value = validInput._2
+
+			command match {
+				case Command.Up => moveCursor(player, 0, -1)
+				case Command.Left => moveCursor(player, -1, 0)
+				case Command.Down => moveCursor(player, 0, 1)
+				case Command.Right => moveCursor(player, 1, 0)
+				case Command.Select => select(player)
+				case Command.Cancel => cancel(player)
+			}
+
+			player.cursor.foreach(cursor => {
+				playerPanels(playerNumber).terrainInfo.show(gameState.map.terrain(cursor.x)(cursor.y))
+				playerPanels(playerNumber).unitInfo.clear()
+				gameState.units.foreach(unit => if (unit.position.equals(cursor)) playerPanels(playerNumber).unitInfo.show(unit))
+			})
+			canvas.drawGame(gameState)
+		})
+
+	})
 
 	private def moveCursor(player: Player, moveX: Int, moveY: Int) {
 		if (player.cursor.isDefined) {
@@ -97,22 +94,24 @@ class InGameScene(mod: Mod) extends Scene {
 	}
 
 	private def select(player: Player) {
-		state match {
-			case NoSelection => {
+		uiState(player) match {
+			case NoSelection =>
 				player.selection = player.cursor
-				state = Selection
-			}
+				uiState(player) = Selection
 			case Selection =>
+			case Moving =>
+			case Attacking =>
 		}
 	}
 
 	private def cancel(player: Player) {
-		state match {
+		uiState(player) match {
 			case NoSelection =>
-			case Selection => {
+			case Selection =>
 				player.selection = None
-				state = NoSelection
-			}
+				uiState(player) = NoSelection
+			case Moving =>
+			case Attacking =>
 		}
 	}
 

@@ -1,0 +1,13 @@
+PLAYER,COMMAND,KEYCODE
+0,Up,W
+0,Left,A
+0,Down,S
+0,Right,D
+0,Select,1
+0,Cancel,Q
+1,Up,Up
+1,Left,Left
+1,Down,Down
+1,Right,Right
+1,Select,Ctrl
+1,Cancel,Shift
