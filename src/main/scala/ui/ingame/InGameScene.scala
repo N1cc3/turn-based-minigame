@@ -50,8 +50,8 @@ class InGameScene(mod: Mod) extends Scene {
 
 	// Player actions
 
-	private val uiState = mutable.Map[Player, UiState]().empty
-	gameState.players.foreach(uiState += _ -> NoSelection)
+	private val uiState = mutable.Map[Player, UiState.Value]().empty
+	gameState.players.foreach(uiState += _ -> UiState.NoSelection)
 
 	val controls = new Controls
 
@@ -95,34 +95,29 @@ class InGameScene(mod: Mod) extends Scene {
 
 	private def select(player: Player) {
 		uiState(player) match {
-			case NoSelection =>
+			case UiState.NoSelection =>
 				player.selection = player.cursor
-				uiState(player) = Selection
-			case Selection =>
-			case Moving =>
-			case Attacking =>
+				uiState(player) = UiState.Selection
+			case UiState.Selection =>
+			case UiState.Moving =>
+			case UiState.Attacking =>
 		}
 	}
 
 	private def cancel(player: Player) {
 		uiState(player) match {
-			case NoSelection =>
-			case Selection =>
+			case UiState.NoSelection =>
+			case UiState.Selection =>
 				player.selection = None
-				uiState(player) = NoSelection
-			case Moving =>
-			case Attacking =>
+				uiState(player) = UiState.NoSelection
+			case UiState.Moving =>
+			case UiState.Attacking =>
 		}
 	}
 
-	sealed trait UiState
-
-	case object NoSelection extends UiState
-
-	case object Selection extends UiState
-
-	case object Moving extends UiState
-
-	case object Attacking extends UiState
+	object UiState extends Enumeration {
+		type UiState = Value
+		val NoSelection, Selection, Moving, Attacking = Value
+	}
 
 }
