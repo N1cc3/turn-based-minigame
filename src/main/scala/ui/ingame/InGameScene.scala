@@ -55,14 +55,16 @@ class InGameScene(mod: Mod) extends Scene {
 			case KeyCode.A.delegate => moveCursor(player1, -1, 0)
 			case KeyCode.S.delegate => moveCursor(player1, 0, 1)
 			case KeyCode.D.delegate => moveCursor(player1, 1, 0)
-			case KeyCode.Digit1.delegate => player1.selection = player1.cursor
+			case KeyCode.Digit1.delegate => select(player1)
+			case KeyCode.Q.delegate => cancel(player1)
 
 			// Player 2
 			case KeyCode.Up.delegate => moveCursor(player2, 0, -1)
 			case KeyCode.Left.delegate => moveCursor(player2, -1, 0)
 			case KeyCode.Down.delegate => moveCursor(player2, 0, 1)
 			case KeyCode.Right.delegate => moveCursor(player2, 1, 0)
-			case KeyCode.Control.delegate => player2.selection = player2.cursor
+			case KeyCode.Control.delegate => select(player2)
+			case KeyCode.Shift.delegate => cancel(player2)
 
 			case _ =>
 		}
@@ -80,7 +82,9 @@ class InGameScene(mod: Mod) extends Scene {
 		canvas.drawGame(gameState)
 	})
 
-	// Helper functions
+	// Player actions
+
+	var state: UiState = NoSelection
 
 	private def moveCursor(player: Player, moveX: Int, moveY: Int) {
 		if (player.cursor.isDefined) {
@@ -91,5 +95,35 @@ class InGameScene(mod: Mod) extends Scene {
 			player.cursor = Option(new Hex(0, 0))
 		}
 	}
+
+	private def select(player: Player) {
+		state match {
+			case NoSelection => {
+				player.selection = player.cursor
+				state = Selection
+			}
+			case Selection =>
+		}
+	}
+
+	private def cancel(player: Player) {
+		state match {
+			case NoSelection =>
+			case Selection => {
+				player.selection = None
+				state = NoSelection
+			}
+		}
+	}
+
+	sealed trait UiState
+
+	case object NoSelection extends UiState
+
+	case object Selection extends UiState
+
+	case object Moving extends UiState
+
+	case object Attacking extends UiState
 
 }
