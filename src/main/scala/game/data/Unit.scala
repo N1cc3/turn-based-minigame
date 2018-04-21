@@ -96,44 +96,34 @@ class Unit(val unitType: UnitType, val player: Player) {
 	}
 
 	def getMoveHexes(terrain: Terrain): Set[Hex] = {
-		val hexes = new mutable.HashSet[Hex]
+		val closed = mutable.Set[Hex]()
+		val open = mutable.Set[Hex](this.position)
+		val cameFrom = mutable.Map[Hex, Hex]()
+		val cost = mutable.Map[Hex, Int](this.position -> 0).withDefaultValue(Int.MaxValue)
 
-		val neighbors = new ListBuffer[(Hex, Hex, Int)]
-		this.position.neighbors().foreach(hex => {
-			if (hex.isInside(terrain.sizeX, terrain.sizeY)) {
-				neighbors += Tuple3(this.position, hex, this.movePoints)
-			}
-		})
+		while (open.nonEmpty) {
+			val current: Hex = open.reduceLeft((h1, h2) => if (cost(h1) < cost(h2)) h1 else h2)
 
-		var frontier = neighbors.toList
-		while (frontier.nonEmpty) {
-			val newFrontier = expandFrontier(frontier)
-			hexes ++= newFrontier.map(_._1)
-			frontier = newFrontier
-		}
+			open.remove(current)
+			closed.add(current)
 
-		// TODO: Remove "from" hex from tuple
-		def expandFrontier(frontier: List[(Hex, Hex, Int)]): List[(Hex, Hex, Int)] = {
-			val newFrontier = new ListBuffer[(Hex, Hex, Int)]
-			frontier.foreach(hexTuple => {
-				val from = hexTuple._1
-				val to = hexTuple._2
-				val movePoints = hexTuple._3
-				if (to.isInside(terrain.sizeX, terrain.sizeY)) {
-					val cost = terrain(to.x, to.y).moveCost
-					if (movePoints >= cost) {
-						to.neighbors().foreach(hex => {
-							if (hex.isInside(terrain.sizeX, terrain.sizeY)) {
-								newFrontier += Tuple3(to, hex, movePoints - cost)
-							}
-						})
+			val neighbors = current.neighbors()
+				.filter(_.isInside(terrain.sizeX, terrain.sizeY))
+				.filterNot(closed.contains)
+
+			neighbors.foreach(neighbor => {
+				val newCost = cost(current) + terrain(neighbor.x, neighbor.y).moveCost
+				if (newCost <= this.movePoints) {
+					open.add(neighbor)
+					if (newCost < cost(neighbor)) {
+						cameFrom(neighbor) = current
+						cost(neighbor) = newCost
 					}
 				}
 			})
-			newFrontier.toList
 		}
 
-		Set.empty ++ hexes
+		closed.toSet
 	}
 
 	def attackHexes(): List[Hex] = {
