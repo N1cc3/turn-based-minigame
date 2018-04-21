@@ -74,7 +74,7 @@ class InGameScene(mod: Mod) extends Scene {
 			}
 
 			player.cursor.foreach(cursor => {
-				playerPanels(playerNumber).terrainInfo.show(gameState.map(cursor.x)(cursor.y))
+				playerPanels(playerNumber).terrainInfo.show(gameState.terrain(cursor.x)(cursor.y))
 				playerPanels(playerNumber).unitInfo.clear()
 				gameState.units.foreach(unit => if (unit.position.equals(cursor)) playerPanels(playerNumber).unitInfo.show(unit))
 			})
@@ -85,8 +85,8 @@ class InGameScene(mod: Mod) extends Scene {
 
 	private def moveCursor(player: Player, moveX: Int, moveY: Int) {
 		if (player.cursor.isDefined) {
-			val x = min(gameState.map.sizeX - 1, max(0, player.cursor.get.x + moveX))
-			val y = min(gameState.map.sizeY - 1, max(0, player.cursor.get.y + moveY))
+			val x = min(gameState.terrain.sizeX - 1, max(0, player.cursor.get.x + moveX))
+			val y = min(gameState.terrain.sizeY - 1, max(0, player.cursor.get.y + moveY))
 			player.cursor = Option(new Hex(x, y))
 		} else {
 			player.cursor = Option(new Hex(0, 0))

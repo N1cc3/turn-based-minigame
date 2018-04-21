@@ -14,51 +14,51 @@ class GameCanvas extends Canvas {
 	private val gc = this.getGraphicsContext2D
 
 	def drawGame(gameState: GameState) {
-		this.drawMap(gameState.map)
-		this.drawUnits(gameState.units.toList, gameState.map)
+		this.drawMap(gameState.terrain)
+		this.drawUnits(gameState.units.toList, gameState.terrain)
 		gameState.players.foreach(player => {
 			player.selection.foreach(selectedHex => {
 				gameState.units.foreach(unit => {
-					if (unit.position.equals(selectedHex)) this.drawMoveHexes(gameState.map, unit)
+					if (unit.position.equals(selectedHex)) this.drawMoveHexes(gameState.terrain, unit)
 				})
-				this.drawSelection(gameState.map, selectedHex, player.color)
+				this.drawSelection(gameState.terrain, selectedHex, player.color)
 			})
-			player.cursor.foreach(this.drawCursor(gameState.map, _, player.color))
+			player.cursor.foreach(this.drawCursor(gameState.terrain, _, player.color))
 		})
 	}
 
-	private def hexSize(map: Terrain): Double = {
-		val x: Double = this.width.value / (map.sizeX.toDouble + 0.5) / sqrt(3)
-		val y: Double = this.height.value / (map.sizeY.toDouble * 3.0 / 4.0 + 1.0 / 4.0) / 2
+	private def hexSize(terrain: Terrain): Double = {
+		val x: Double = this.width.value / (terrain.sizeX.toDouble + 0.5) / sqrt(3)
+		val y: Double = this.height.value / (terrain.sizeY.toDouble * 3.0 / 4.0 + 1.0 / 4.0) / 2
 		min(x, y)
 	}
 
-	private def drawMap(map: Terrain) {
-		val size = hexSize(map)
+	private def drawMap(terrain: Terrain) {
+		val size = hexSize(terrain)
 		gc.clearRect(0, 0, this.getWidth, this.getHeight)
 		val colorAdjust = new ColorAdjust()
 		colorAdjust.setBrightness(-0.05)
-		for (y <- 0 until map.sizeY) {
-			for (x <- 0 until map.sizeX) {
+		for (y <- 0 until terrain.sizeY) {
+			for (x <- 0 until terrain.sizeX) {
 				val hex = new Hex(x, y)
 				val position = hex.drawingPosition(size)
 				if (hex.x % 2 == 1) gc.setEffect(colorAdjust)
-				gc.drawImage(map(x)(y).image, position.x, position.y, size * sqrt(3), size * 2)
+				gc.drawImage(terrain(x, y).image, position.x, position.y, size * sqrt(3), size * 2)
 				if (hex.x % 2 == 1) gc.setEffect(null)
 			}
 		}
 	}
 
-	private def drawUnits(units: List[Unit], map: Terrain) {
-		val size = hexSize(map)
+	private def drawUnits(units: List[Unit], terrain: Terrain) {
+		val size = hexSize(terrain)
 		for (unit <- units) {
 			val position = unit.position.drawingPosition(size)
 			gc.drawImage(unit.unitType.image, position.x, position.y, size * sqrt(3), size * 2)
 		}
 	}
 
-	private def drawCursor(map: Terrain, hex: Hex, color: Color) {
-		val size = hexSize(map)
+	private def drawCursor(terrain: Terrain, hex: Hex, color: Color) {
+		val size = hexSize(terrain)
 		val corners = hex.corners(size)
 		gc.setStroke(color.opacity(0.5))
 		for (i <- 0 until 6) {
@@ -67,8 +67,8 @@ class GameCanvas extends Canvas {
 		}
 	}
 
-	private def drawSelection(map: Terrain, hex: Hex, color: Color) {
-		val size = hexSize(map)
+	private def drawSelection(terrain: Terrain, hex: Hex, color: Color) {
+		val size = hexSize(terrain)
 		val corners = hex.corners(size)
 		gc.setStroke(color.opacity(0.5))
 		for (i <- 0 until 6) {
@@ -79,10 +79,10 @@ class GameCanvas extends Canvas {
 		gc.fillPolygon(corners.map(_.x), corners.map(_.y), 6)
 	}
 
-	private def drawMoveHexes(map: Terrain, unit: Unit) {
-		val size = hexSize(map)
+	private def drawMoveHexes(terrain: Terrain, unit: Unit) {
+		val size = hexSize(terrain)
 		gc.setStroke(Color.rgb(0, 255, 0).opacity(0.5))
-		val moveHexes = unit.getMoveHexes(map)
+		val moveHexes = unit.getMoveHexes(terrain)
 		moveHexes.foreach(hex => {
 			val corners = hex.corners(size)
 			val neighbors = hex.neighbors()
