@@ -3,7 +3,7 @@ package game.data
 import scala.collection.mutable.ListBuffer
 
 class GameState(
-								 val map: Map,
+								 val map: Terrain,
 								 val players: Array[Player],
 							 ) {
 

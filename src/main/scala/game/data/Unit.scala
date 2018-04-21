@@ -52,7 +52,7 @@ class Unit(val unitType: UnitType, val player: Player) {
 
 	// Helpers
 
-	def getMoveHexes(map: Map): Set[Hex] = {
+	def getMoveHexes(map: Terrain): Set[Hex] = {
 		val hexes = new mutable.HashSet[Hex]
 
 		val neighbors = new ListBuffer[(Hex, Hex, Int)]
@@ -76,7 +76,7 @@ class Unit(val unitType: UnitType, val player: Player) {
 				val to = hexTuple._2
 				val movePoints = hexTuple._3
 				if (to.isInside(map.sizeX, map.sizeY)) {
-					val cost = map.terrain(to.x)(to.y).moveCost
+					val cost = map(to.x)(to.y).moveCost
 					if (movePoints >= cost) {
 						to.neighbors().foreach(hex => {
 							if (hex.isInside(map.sizeX, map.sizeY)) {

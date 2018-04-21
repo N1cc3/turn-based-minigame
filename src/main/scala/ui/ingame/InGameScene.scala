@@ -74,7 +74,7 @@ class InGameScene(mod: Mod) extends Scene {
 			}
 
 			player.cursor.foreach(cursor => {
-				playerPanels(playerNumber).terrainInfo.show(gameState.map.terrain(cursor.x)(cursor.y))
+				playerPanels(playerNumber).terrainInfo.show(gameState.map(cursor.x)(cursor.y))
 				playerPanels(playerNumber).unitInfo.clear()
 				gameState.units.foreach(unit => if (unit.position.equals(cursor)) playerPanels(playerNumber).unitInfo.show(unit))
 			})

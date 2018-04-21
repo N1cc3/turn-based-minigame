@@ -77,19 +77,19 @@ class Mod(val name: String) {
 		val sizeX = scenarioData("SIZE_X").toInt
 		val sizeY = scenarioData("SIZE_Y").toInt
 		val description = scenarioData("DESCRIPTION")
-		val scenario = new Map(name, sizeX, sizeY, description)
+		val terrain = new Terrain(name, sizeX, sizeY, description)
 
 		val terrainReader: CSVReader = CSVReader.open(path + "terrain.csv")
 		for (terrainData <- terrainReader.allWithHeaders()) {
 			val x = terrainData("X").toInt
 			val y = terrainData("Y").toInt
-			val terrain = terrainData("TERRAIN_TYPE")
-			scenario.terrain(x)(y) = terrainTypes(terrain)
+			val terrainType = terrainTypes(terrainData("TERRAIN_TYPE"))
+			terrain(x, y) = terrainType
 		}
 
 		val players = Array(new Player(Color.Blue), new Player(Color.Red))
 
-		val gameState = new GameState(scenario, players)
+		val gameState = new GameState(terrain, players)
 
 		val unitReader: CSVReader = CSVReader.open(path + "units.csv")
 		for (unitData <- unitReader.allWithHeaders()) {
