@@ -83,11 +83,6 @@ class Unit(val unitType: UnitType, val player: Player) {
 								newFrontier += Tuple3(to, hex, movePoints - cost)
 							}
 						})
-						//						to.frontHexes(from).foreach(frontHex => {
-						//							if (frontHex.isInside(map.sizeX, map.sizeY)) {
-						//								newFrontier += Tuple3(to, frontHex, movePoints - cost)
-						//							}
-						//						})
 					}
 				}
 			})

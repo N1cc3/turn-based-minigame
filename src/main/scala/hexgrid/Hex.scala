@@ -2,7 +2,7 @@ package hexgrid
 
 import scalafx.geometry.Point2D
 
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+import scala.collection.mutable.ArrayBuffer
 import scala.math._
 
 class Hex(val x: Int, val y: Int) {
@@ -69,20 +69,6 @@ class Hex(val x: Int, val y: Int) {
 			corners += corner
 		}
 		corners.toArray
-	}
-
-	def frontHexes(from: Hex): List[Hex] = {
-		val hexes = new ListBuffer[Hex]
-
-		val cube1 = from.toCube
-		val cube2 = this.toCube
-		val vec = cube2 - cube1
-
-		hexes += (cube1 + vec).toHex
-		hexes += (cube1 + new Cube(-vec.z, -vec.x, -vec.y)).toHex
-		hexes += (cube1 + new Cube(-vec.y, -vec.z, -vec.x)).toHex
-
-		hexes.toList
 	}
 
 	def isInside(maxX: Int, maxY: Int): Boolean = 0 <= x && x < maxX && 0 <= y && y < maxY
