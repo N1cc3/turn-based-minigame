@@ -2,8 +2,8 @@ package ui.ingame
 
 import game.data.{GameState, Map, Unit}
 import hexgrid.Hex
-import scalafx.geometry.Point2D
 import scalafx.scene.canvas.Canvas
+import scalafx.scene.effect.ColorAdjust
 import scalafx.scene.paint.Color
 
 import scala.math.{min, sqrt}
@@ -27,7 +27,7 @@ class GameCanvas extends Canvas {
 		})
 	}
 
-	def hexSize(map: Map): Double = {
+	private def hexSize(map: Map): Double = {
 		val x: Double = this.width.value / (map.sizeX.toDouble + 0.5) / sqrt(3)
 		val y: Double = this.height.value / (map.sizeY.toDouble * 3.0 / 4.0 + 1.0 / 4.0) / 2
 		min(x, y)
@@ -36,13 +36,15 @@ class GameCanvas extends Canvas {
 	private def drawMap(map: Map) {
 		val size = hexSize(map)
 		gc.clearRect(0, 0, this.getWidth, this.getHeight)
+		val colorAdjust = new ColorAdjust()
+		colorAdjust.setBrightness(-0.05)
 		for (y <- 0 until map.sizeY) {
 			for (x <- 0 until map.sizeX) {
 				val hex = new Hex(x, y)
 				val position = hex.drawingPosition(size)
-				if (hex.x % 2 == 1) gc.setGlobalAlpha(0.9)
+				if (hex.x % 2 == 1) gc.setEffect(colorAdjust)
 				gc.drawImage(map.terrain(x)(y).image, position.x, position.y, size * sqrt(3), size * 2)
-				if (hex.x % 2 == 1) gc.setGlobalAlpha(1)
+				if (hex.x % 2 == 1) gc.setEffect(null)
 			}
 		}
 	}
@@ -57,9 +59,7 @@ class GameCanvas extends Canvas {
 
 	private def drawCursor(map: Map, hex: Hex, color: Color) {
 		val size = hexSize(map)
-		val position = hex.drawingPosition(size)
-		val center = new Point2D(position.x + size * sqrt(3) / 2, position.y + size * 2 / 2)
-		val corners = hex.corners(center, size)
+		val corners = hex.corners(size)
 		gc.setStroke(color.opacity(0.5))
 		for (i <- 0 until 6) {
 			gc.setLineWidth(size / 40)
@@ -69,9 +69,7 @@ class GameCanvas extends Canvas {
 
 	private def drawSelection(map: Map, hex: Hex, color: Color) {
 		val size = hexSize(map)
-		val position = hex.drawingPosition(size)
-		val center = new Point2D(position.x + size * sqrt(3) / 2, position.y + size * 2 / 2)
-		val corners = hex.corners(center, size)
+		val corners = hex.corners(size)
 		gc.setStroke(color.opacity(0.5))
 		for (i <- 0 until 6) {
 			gc.setLineWidth(size / 20)
@@ -86,9 +84,7 @@ class GameCanvas extends Canvas {
 		gc.setStroke(Color.rgb(0, 255, 0).opacity(0.5))
 		val moveHexes = unit.getMoveHexes(map)
 		moveHexes.foreach(hex => {
-			val position = hex.drawingPosition(size)
-			val center = new Point2D(position.x + size * sqrt(3) / 2, position.y + size * 2 / 2)
-			val corners = hex.corners(center, size)
+			val corners = hex.corners(size)
 			val neighbors = hex.neighbors()
 			for (i <- 0 until 6) {
 				val neighbor = neighbors(5 - i)

@@ -50,16 +50,22 @@ class Hex(val x: Int, val y: Int) {
 		new Point2D(size * sqrt(3) * x + size * sqrt(3) * parity / 2, size * 2 * y * 3 / 4)
 	}
 
-	def corner(center: Point2D, size: Double, i: Int): Point2D = {
+	def center(size: Double): Point2D = {
+		val pos = this.drawingPosition(size)
+		new Point2D(pos.x + size * sqrt(3) / 2, pos.y + size * 2 / 2)
+	}
+
+	def corner(size: Double, i: Int): Point2D = {
 		val angle_deg = 60 * i + 30
 		val angle_rad = Pi / 180 * angle_deg
+		val center = this.center(size)
 		new Point2D(center.x + size * cos(angle_rad), center.y + size * sin(angle_rad))
 	}
 
-	def corners(center: Point2D, size: Double): Array[Point2D] = {
+	def corners(size: Double): Array[Point2D] = {
 		val corners = new ArrayBuffer[Point2D]
 		for (i <- 0 until 6) {
-			val corner = this.corner(center, size, i)
+			val corner = this.corner(size, i)
 			corners += corner
 		}
 		corners.toArray
