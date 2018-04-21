@@ -23,4 +23,22 @@ class Cube(val x: Int, val y: Int, val z: Int) {
 		results.toList
 	}
 
+	def $minus(that: Cube): Cube = new Cube(
+		this.x - that.x,
+		this.y - that.y,
+		this.z - that.z,
+	)
+
+	def $plus(that: Cube): Cube = new Cube(
+		this.x + that.x,
+		this.y + that.y,
+		this.z + that.z,
+	)
+
+	override def equals(that: Any): Boolean =
+		that match {
+			case that: Cube => that.isInstanceOf[Cube] && this.x == that.x && this.y == that.y && this.z == that.z
+			case _ => false
+		}
+
 }

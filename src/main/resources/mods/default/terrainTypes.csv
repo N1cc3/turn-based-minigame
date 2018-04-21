@@ -1,2 +1,4 @@
 NAME,MOVE_COST,EFFECTS,IMAGE,COLOR
-"Grass Mountain",1, ,"terrain/grass/grass_14.png","#00dd00"
+"Grass Mountain",5, ,"terrain/grass/grass_14.png","#00aa00"
+"Grass Forest",3, ,"terrain/grass/grass_13.png","#00dd00"
+"Grass Plains",1, ,"terrain/grass/grass_05.png","#00ff00"

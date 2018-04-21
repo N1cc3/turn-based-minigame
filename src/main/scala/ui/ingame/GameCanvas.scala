@@ -17,8 +17,13 @@ class GameCanvas extends Canvas {
 		this.drawMap(gameState.map)
 		this.drawUnits(gameState.units.toList, gameState.map)
 		gameState.players.foreach(player => {
+			player.selection.foreach(selectedHex => {
+				gameState.units.foreach(unit => {
+					if (unit.position.equals(selectedHex)) this.drawMoveHexes(gameState.map, unit)
+				})
+				this.drawSelection(gameState.map, selectedHex, player.color)
+			})
 			player.cursor.foreach(this.drawCursor(gameState.map, _, player.color))
-			player.selection.foreach(this.drawSelection(gameState.map, _, player.color))
 		})
 	}
 
@@ -72,6 +77,25 @@ class GameCanvas extends Canvas {
 		}
 		gc.setFill(color.opacity(0.1))
 		gc.fillPolygon(corners.map(_.x), corners.map(_.y), 6)
+	}
+
+	private def drawMoveHexes(map: Map, unit: Unit) {
+		val size = hexSize(map)
+		gc.setStroke(Color.rgb(0, 255, 0).opacity(0.5))
+		val moveHexes = unit.getMoveHexes(map)
+		moveHexes.foreach(hex => {
+			val position = hex.drawingPosition(size)
+			val center = new Point2D(position.x + size * sqrt(3) / 2, position.y + size * 2 / 2)
+			val corners = hex.corners(center, size)
+			val neighbors = hex.neighbors()
+			for (i <- 0 until 6) {
+				val neighbor = neighbors(5 - i)
+				if (!moveHexes.contains(neighbor) && unit.position != neighbor) {
+					gc.setLineWidth(size / 20)
+					gc.strokeLine(corners(i).x, corners(i).y, corners((i + 1) % 6).x, corners((i + 1) % 6).y)
+				}
+			}
+		})
 	}
 
 }

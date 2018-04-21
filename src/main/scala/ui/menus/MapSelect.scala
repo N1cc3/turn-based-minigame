@@ -23,7 +23,6 @@ class MapSelect(mod: Mod) extends Scene {
 	})
 	mapButtons.head.setSelected(true)
 
-
 	private val startGameBtn = new Button("Start Game")
 	startGameBtn.styleClass += "MapSelect-startGameBtn"
 	mainBox.children.add(startGameBtn)

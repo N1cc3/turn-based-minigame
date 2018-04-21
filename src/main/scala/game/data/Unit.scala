@@ -2,6 +2,7 @@ package game.data
 
 import hexgrid.Hex
 
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.math.max
 
@@ -11,6 +12,7 @@ class Unit(val unitType: UnitType, val player: Player) {
 
 	var position: Hex = _
 	var hp: Int = unitType.hp
+	var movePoints: Int = speed
 
 	def attack: Int = unitType.attack + effects.map(_.effectType.attack).sum
 
@@ -42,6 +44,61 @@ class Unit(val unitType: UnitType, val player: Player) {
 	def attacks(target: Unit) {
 		target.takesDamage(this.attack)
 		this.takesDamage(target.defence)
+	}
+
+	def move(hex: Hex) {
+
+	}
+
+	// Helpers
+
+	def getMoveHexes(map: Map): Set[Hex] = {
+		val hexes = new mutable.HashSet[Hex]
+
+		val neighbors = new ListBuffer[(Hex, Hex, Int)]
+		this.position.neighbors().foreach(hex => {
+			if (hex.isInside(map.sizeX, map.sizeY)) {
+				neighbors += Tuple3(this.position, hex, this.movePoints)
+			}
+		})
+
+		var frontier = neighbors.toList
+		while (frontier.nonEmpty) {
+			val newFrontier = expandFrontier(frontier)
+			hexes ++= newFrontier.map(_._1)
+			frontier = newFrontier
+		}
+
+		def expandFrontier(frontier: List[(Hex, Hex, Int)]): List[(Hex, Hex, Int)] = {
+			val newFrontier = new ListBuffer[(Hex, Hex, Int)]
+			frontier.foreach(hexTuple => {
+				val from = hexTuple._1
+				val to = hexTuple._2
+				val movePoints = hexTuple._3
+				if (to.isInside(map.sizeX, map.sizeY)) {
+					val cost = map.terrain(to.x)(to.y).moveCost
+					if (movePoints >= cost) {
+						to.neighbors().foreach(hex => {
+							if (hex.isInside(map.sizeX, map.sizeY)) {
+								newFrontier += Tuple3(to, hex, movePoints - cost)
+							}
+						})
+						//						to.frontHexes(from).foreach(frontHex => {
+						//							if (frontHex.isInside(map.sizeX, map.sizeY)) {
+						//								newFrontier += Tuple3(to, frontHex, movePoints - cost)
+						//							}
+						//						})
+					}
+				}
+			})
+			newFrontier.toList
+		}
+
+		Set.empty ++ hexes
+	}
+
+	def attackHexes(): List[Hex] = {
+		this.position.neighborsWithin(this.range)
 	}
 
 }
