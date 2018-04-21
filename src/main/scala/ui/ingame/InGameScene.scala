@@ -76,7 +76,7 @@ class InGameScene(mod: Mod) extends Scene {
 			player.cursor.foreach(cursor => {
 				playerPanels(playerNumber).terrainInfo.show(gameState.terrain(cursor.x, cursor.y))
 				playerPanels(playerNumber).unitInfo.clear()
-				gameState.units.foreach(unit => if (unit.position.equals(cursor)) playerPanels(playerNumber).unitInfo.show(unit))
+				gameState.units.find(_.position.equals(cursor)).foreach(playerPanels(playerNumber).unitInfo.show)
 			})
 			canvas.drawGame(gameState)
 		})
@@ -96,10 +96,14 @@ class InGameScene(mod: Mod) extends Scene {
 	private def select(player: Player) {
 		uiState(player) match {
 			case UiState.NoSelection =>
-				player.selection = player.cursor
-				uiState(player) = UiState.Selection
+				if (player.cursor.isDefined) {
+					player.selection = player.cursor
+					uiState(player) = UiState.Selection
+				}
 			case UiState.Selection =>
-				gameState.units.filter(_.position == player.selection.get).foreach(_.move(gameState, player.cursor.get))
+				gameState.units.find(_.position.equals(player.selection.get)).foreach({ unit =>
+					if (unit.move(gameState, player.cursor.get)) player.selection = player.cursor
+				})
 			case UiState.Moving =>
 			case UiState.Attacking =>
 		}
