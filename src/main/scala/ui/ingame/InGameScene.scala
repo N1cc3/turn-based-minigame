@@ -99,6 +99,7 @@ class InGameScene(mod: Mod) extends Scene {
 				player.selection = player.cursor
 				uiState(player) = UiState.Selection
 			case UiState.Selection =>
+				gameState.units.filter(_.position == player.selection.get).foreach(_.move(gameState, player.cursor.get))
 			case UiState.Moving =>
 			case UiState.Attacking =>
 		}

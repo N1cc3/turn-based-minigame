@@ -30,7 +30,7 @@ class Unit(val unitType: UnitType, val player: Player) {
 
 	// Events
 
-	def takesDamage(damage: Int, skipArmor: Boolean = false) {
+	private def takesDamage(damage: Int, skipArmor: Boolean = false) {
 		if (skipArmor) {
 			this.hp -= damage
 		} else {
@@ -46,11 +46,54 @@ class Unit(val unitType: UnitType, val player: Player) {
 		this.takesDamage(target.defence)
 	}
 
-	def move(hex: Hex) {
-
+	/**
+		* Attempt to move unit.
+		*
+		* @param gameState Current gameState
+		* @param to        Destination hex
+		* @return true if moved succesfully
+		*/
+	def move(gameState: GameState, to: Hex): Boolean = {
+		if (!gameState.units.map(_.position).contains(to) && getMoveHexes(gameState.terrain).contains(to)) {
+			this.movePoints -= getMoveCost(to, gameState.terrain)
+			this.position = to
+			true
+		} else {
+			false
+		}
 	}
 
 	// Helpers
+
+	def getMoveCost(to: Hex, terrain: Terrain): Int = {
+		val closed = mutable.Set[Hex]()
+		val open = mutable.Set[Hex](this.position)
+		val cameFrom = mutable.Map[Hex, Hex]()
+		val cost = mutable.Map[Hex, Int](this.position -> 0).withDefaultValue(Int.MaxValue)
+
+		while (open.nonEmpty) {
+			val current: Hex = open.reduceLeft((h1, h2) => if (cost(h1) < cost(h2)) h1 else h2)
+			if (current.equals(to)) return cost(current)
+
+			open.remove(current)
+			closed.add(current)
+
+			val neighbors = current.neighbors()
+				.filter(_.isInside(terrain.sizeX, terrain.sizeY))
+				.filterNot(closed.contains)
+
+			neighbors.foreach(neighbor => {
+				open.add(neighbor)
+				val newCost = cost(current) + terrain(neighbor.x, neighbor.y).moveCost
+				if (newCost < cost(neighbor)) {
+					cameFrom(neighbor) = current
+					cost(neighbor) = newCost
+				}
+			})
+		}
+
+		0 // Hex not reachable
+	}
 
 	def getMoveHexes(terrain: Terrain): Set[Hex] = {
 		val hexes = new mutable.HashSet[Hex]
@@ -69,6 +112,7 @@ class Unit(val unitType: UnitType, val player: Player) {
 			frontier = newFrontier
 		}
 
+		// TODO: Remove "from" hex from tuple
 		def expandFrontier(frontier: List[(Hex, Hex, Int)]): List[(Hex, Hex, Int)] = {
 			val newFrontier = new ListBuffer[(Hex, Hex, Int)]
 			frontier.foreach(hexTuple => {
