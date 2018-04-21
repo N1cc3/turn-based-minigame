@@ -40,7 +40,9 @@ class GameCanvas extends Canvas {
 			for (x <- 0 until map.sizeX) {
 				val hex = new Hex(x, y)
 				val position = hex.drawingPosition(size)
+				if (hex.x % 2 == 1) gc.setGlobalAlpha(0.9)
 				gc.drawImage(map.terrain(x)(y).image, position.x, position.y, size * sqrt(3), size * 2)
+				if (hex.x % 2 == 1) gc.setGlobalAlpha(1)
 			}
 		}
 	}
