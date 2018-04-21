@@ -19,11 +19,14 @@ class GameCanvas extends Canvas {
 		gameState.players.foreach(player => {
 			player.selection.foreach(selectedHex => {
 				gameState.units.foreach(unit => {
-					if (unit.position.equals(selectedHex)) this.drawMoveHexes(gameState.terrain, unit)
+					if (unit.position.equals(selectedHex)) {
+						this.drawMoveHexes(gameState.terrain, unit)
+						this.drawAttackHexes(gameState.terrain, unit)
+					}
 				})
 				this.drawSelection(gameState.terrain, selectedHex, player.color)
 			})
-			player.cursor.foreach(this.drawCursor(gameState.terrain, _, player.color))
+			this.drawCursor(gameState.terrain, player.cursor, player.color)
 		})
 	}
 
@@ -90,6 +93,23 @@ class GameCanvas extends Canvas {
 				val neighbor = neighbors(5 - i)
 				if (!moveHexes.contains(neighbor) && unit.position != neighbor) {
 					gc.setLineWidth(size / 20)
+					gc.strokeLine(corners(i).x, corners(i).y, corners((i + 1) % 6).x, corners((i + 1) % 6).y)
+				}
+			}
+		})
+	}
+
+	private def drawAttackHexes(terrain: Terrain, unit: Unit) {
+		val size = hexSize(terrain)
+		gc.setStroke(Color.rgb(255, 0, 0).opacity(0.5))
+		val attackHexes = unit.getAttackHexes(terrain)
+		attackHexes.foreach(hex => {
+			val corners = hex.corners(size)
+			val neighbors = hex.neighbors()
+			for (i <- 0 until 6) {
+				val neighbor = neighbors(5 - i)
+				if (!attackHexes.contains(neighbor) && unit.position != neighbor) {
+					gc.setLineWidth(size / 40)
 					gc.strokeLine(corners(i).x, corners(i).y, corners((i + 1) % 6).x, corners((i + 1) % 6).y)
 				}
 			}

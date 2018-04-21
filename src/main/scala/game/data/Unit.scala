@@ -126,8 +126,8 @@ class Unit(val unitType: UnitType, val player: Player) {
 		closed.toSet
 	}
 
-	def attackHexes(): List[Hex] = {
-		this.position.neighborsWithin(this.range)
+	def getAttackHexes(terrain: Terrain): Set[Hex] = {
+		this.position.neighborsWithin(this.range).filter(_.isInside(terrain.sizeX, terrain.sizeY)).toSet
 	}
 
 }

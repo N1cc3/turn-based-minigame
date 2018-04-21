@@ -18,7 +18,7 @@ class Cube(val x: Int, val y: Int, val z: Int) {
 		for (cx <- -range to range;
 				 cy <- max(-range, -cx - range) to min(range, -cx + range)) {
 			val cz = -cx - cy
-			results += new Cube(cx, cy, cz)
+			results += this + new Cube(cx, cy, cz)
 		}
 		results.toList
 	}

@@ -73,39 +73,30 @@ class InGameScene(mod: Mod) extends Scene {
 				case Command.Cancel => cancel(player)
 			}
 
-			player.cursor.foreach(cursor => {
-				playerPanels(playerNumber).terrainInfo.show(gameState.terrain(cursor.x, cursor.y))
-				playerPanels(playerNumber).unitInfo.clear()
-				gameState.units.find(_.position.equals(cursor)).foreach(playerPanels(playerNumber).unitInfo.show)
-			})
+			playerPanels(playerNumber).terrainInfo.show(gameState.terrain(player.cursor.x, player.cursor.y))
+			playerPanels(playerNumber).unitInfo.clear()
+			gameState.units.find(_.position.equals(player.cursor)).foreach(playerPanels(playerNumber).unitInfo.show)
 			canvas.drawGame(gameState)
 		})
 
 	})
 
 	private def moveCursor(player: Player, moveX: Int, moveY: Int) {
-		if (player.cursor.isDefined) {
-			val x = min(gameState.terrain.sizeX - 1, max(0, player.cursor.get.x + moveX))
-			val y = min(gameState.terrain.sizeY - 1, max(0, player.cursor.get.y + moveY))
-			player.cursor = Option(new Hex(x, y))
-		} else {
-			player.cursor = Option(new Hex(0, 0))
-		}
+		val x = min(gameState.terrain.sizeX - 1, max(0, player.cursor.x + moveX))
+		val y = min(gameState.terrain.sizeY - 1, max(0, player.cursor.y + moveY))
+		player.cursor = new Hex(x, y)
 	}
 
 	private def select(player: Player) {
 		uiState(player) match {
 			case UiState.NoSelection =>
-				if (player.cursor.isDefined) {
-					player.selection = player.cursor
-					uiState(player) = UiState.Selection
-				}
+				player.selection = Option(player.cursor)
+				uiState(player) = UiState.Selection
 			case UiState.Selection =>
-				gameState.units.find(_.position.equals(player.selection.get)).foreach({ unit =>
-					if (unit.move(gameState, player.cursor.get)) player.selection = player.cursor
+				gameState.units.find(_.position.equals(player.selection.get)).foreach(unit => {
+					val moveSuccess = unit.move(gameState, player.cursor)
+					if (moveSuccess) player.selection = Option(player.cursor)
 				})
-			case UiState.Moving =>
-			case UiState.Attacking =>
 		}
 	}
 
@@ -115,14 +106,12 @@ class InGameScene(mod: Mod) extends Scene {
 			case UiState.Selection =>
 				player.selection = None
 				uiState(player) = UiState.NoSelection
-			case UiState.Moving =>
-			case UiState.Attacking =>
 		}
 	}
 
 	object UiState extends Enumeration {
 		type UiState = Value
-		val NoSelection, Selection, Moving, Attacking = Value
+		val NoSelection, Selection = Value
 	}
 
 }
