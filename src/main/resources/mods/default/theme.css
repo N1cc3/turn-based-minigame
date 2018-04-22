@@ -88,6 +88,10 @@
 
 }
 
+.UnitInfo-hpBar {
+    -fx-pref-width: 160px;
+}
+
 .UnitInfo-hpLabel {
 
 }
