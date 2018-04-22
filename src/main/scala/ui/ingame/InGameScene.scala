@@ -90,8 +90,12 @@ class InGameScene(mod: Mod) extends Scene {
 	private def select(player: Player) {
 		uiState(player) match {
 			case UiState.NoSelection =>
-				player.selection = Option(player.cursor)
-				uiState(player) = UiState.Selection
+				gameState.units.find(_.position.equals(player.cursor)).foreach(unit => {
+					if (unit.player == player) {
+						player.selection = Option(player.cursor)
+						uiState(player) = UiState.Selection
+					}
+				})
 			case UiState.Selection =>
 				gameState.units.find(_.position.equals(player.selection.get)).foreach(unit => {
 					val moveSuccess = unit.move(gameState, player.cursor)

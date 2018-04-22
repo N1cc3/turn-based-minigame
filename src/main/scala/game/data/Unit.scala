@@ -52,7 +52,7 @@ class Unit(val unitType: UnitType, val player: Player) {
 	def attacks(gameState: GameState, target: Hex): Boolean = {
 		val targetUnit = gameState.units.find(_.position.equals(target))
 		if (targetUnit.isDefined
-			&& targetUnit.get != this // TODO: Check not same player instead
+			&& targetUnit.get.player != this.player
 			&& this.canAttack
 			&& getAttackHexes(gameState.terrain).contains(target)
 		) {
