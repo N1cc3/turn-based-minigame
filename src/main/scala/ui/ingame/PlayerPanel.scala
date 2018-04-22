@@ -13,9 +13,13 @@ class PlayerPanel() extends VBox {
 	playerLabel.styleClass += "PlayerPanel-playerLabel"
 	this.children.add(playerLabel)
 
-	private val phaseLabel = new Label("Battle Phase")
-	phaseLabel.styleClass += "PlayerPanel-phaseLabel"
-	this.children.add(phaseLabel)
+	private val turnLabel = new Label("Your Turn")
+	turnLabel.styleClass += "PlayerPanel-turnLabel"
+	this.children.add(turnLabel)
+
+	def inTurn(inTurn: Boolean) {
+		turnLabel.opacity = if (inTurn) 1 else 0
+	}
 
 	// Economy
 

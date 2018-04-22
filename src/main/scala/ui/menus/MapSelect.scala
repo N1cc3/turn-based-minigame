@@ -29,7 +29,7 @@ class MapSelect(mod: Mod) extends Scene {
 
 	// Events
 
-	def setStartGameEvent(e: EventHandler[ActionEvent]) {
+	def onStartGame(e: EventHandler[ActionEvent]) {
 		startGameBtn.setOnAction(e)
 	}
 

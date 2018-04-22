@@ -5,9 +5,11 @@ PLAYER,COMMAND,KEYCODE
 0,Right,D
 0,Select,1
 0,Cancel,Q
+0,Ready,2
 1,Up,Up
 1,Left,Left
 1,Down,Down
 1,Right,Right
 1,Select,Ctrl
 1,Cancel,Shift
+1,Ready,Enter

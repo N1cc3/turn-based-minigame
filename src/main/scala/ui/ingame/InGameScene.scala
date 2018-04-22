@@ -1,5 +1,7 @@
 package ui.ingame
 
+import java.util.function.Consumer
+
 import game.Mod
 import game.data.{GameState, Player}
 import hexgrid.Hex
@@ -28,13 +30,21 @@ class InGameScene(mod: Mod) extends Scene {
 	playerPanel2.styleClass += "InGameScene-playerPanel2"
 	mainBox.getChildren.add(playerPanel2)
 
-	val playerPanels = Array(playerPanel1, playerPanel2)
+	private val playerPanels = Array(playerPanel1, playerPanel2)
 
-	val canvas = new GameCanvas()
-	val gameState: GameState = mod.loadScenario(mod.scenarioNames.head)
+	private val canvas = new GameCanvas()
+	private val gameState: GameState = mod.loadScenario(mod.scenarioNames.head)
 	canvasBox.getChildren.add(canvas)
 
 	canvas.drawGame(gameState)
+
+	// Events
+
+	private var gameEndEvent: Option[Consumer[GameState]] = None
+
+	def onGameEnd(e: Consumer[GameState]) {
+		gameEndEvent = Option(e)
+	}
 
 	// Listeners
 
@@ -71,12 +81,17 @@ class InGameScene(mod: Mod) extends Scene {
 				case Command.Right => moveCursor(player, 1, 0)
 				case Command.Select => select(player)
 				case Command.Cancel => cancel(player)
+				case Command.Ready => ready(player)
 			}
 
 			playerPanels(playerNumber).terrainInfo.show(gameState.terrain(player.cursor.x, player.cursor.y))
 			playerPanels(playerNumber).unitInfo.clear()
 			gameState.units.find(_.position.equals(player.cursor)).foreach(playerPanels(playerNumber).unitInfo.show)
+			playerPanels.indices.foreach(idx => playerPanels(idx).inTurn(gameState.playerInTurn == idx))
+
 			canvas.drawGame(gameState)
+
+			if (gameState.isGameOver) gameEndEvent.foreach(_.accept(gameState))
 		})
 
 	})
@@ -116,6 +131,10 @@ class InGameScene(mod: Mod) extends Scene {
 				player.selection = None
 				uiState(player) = UiState.NoSelection
 		}
+	}
+
+	private def ready(player: Player) {
+		gameState.nextTurn()
 	}
 
 	object UiState extends Enumeration {

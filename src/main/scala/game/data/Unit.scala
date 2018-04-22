@@ -44,9 +44,8 @@ class Unit(val unitType: UnitType, val player: Player) {
 		} else {
 			this.hp -= max(0, damage - this.armor)
 		}
-		val dead = this.hp <= 0
 		this.hp = max(0, this.hp)
-		dead
+		this.hp == 0 // Is dead
 	}
 
 	// Actions
@@ -61,7 +60,8 @@ class Unit(val unitType: UnitType, val player: Player) {
 	def attacks(gameState: GameState, target: Hex): Boolean = {
 		var success = false
 		gameState.units.find(_.position.equals(target)).foreach(targetUnit => {
-			if (targetUnit.player != this.player
+			if (gameState.players(gameState.playerInTurn) == this.player
+				&& targetUnit.player != this.player
 				&& this.canAttack
 				&& getAttackHexes(gameState.terrain).contains(target)
 			) {
@@ -85,7 +85,9 @@ class Unit(val unitType: UnitType, val player: Player) {
 		* @return true if moved successfully
 		*/
 	def move(gameState: GameState, target: Hex): Boolean = {
-		if (!gameState.units.map(_.position).contains(target) && getMoveHexes(gameState.terrain).contains(target)) {
+		if (gameState.players(gameState.playerInTurn) == this.player
+			&& !gameState.units.map(_.position).contains(target)
+			&& getMoveHexes(gameState.terrain).contains(target)) {
 			this.movePoints -= getMoveCost(target, gameState.terrain)
 			this.position = target
 			true

@@ -16,6 +16,7 @@ class Controls extends mutable.HashMap[String, (Int, Command.Value)] {
 			case "Right" => Command.Right
 			case "Select" => Command.Select
 			case "Cancel" => Command.Cancel
+			case "Ready" => Command.Ready
 		}
 		val keycode = controlsData("KEYCODE")
 		this += keycode -> (player, command)
