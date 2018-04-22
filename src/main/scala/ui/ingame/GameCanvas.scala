@@ -21,7 +21,7 @@ class GameCanvas extends Canvas {
 				gameState.units.foreach(unit => {
 					if (unit.position.equals(selectedHex)) {
 						this.drawMoveHexes(gameState.terrain, unit)
-						this.drawAttackHexes(gameState.terrain, unit)
+						if (unit.canAttack) this.drawAttackHexes(gameState.terrain, unit)
 					}
 				})
 				this.drawSelection(gameState.terrain, selectedHex, player.color)

@@ -96,6 +96,11 @@ class InGameScene(mod: Mod) extends Scene {
 				gameState.units.find(_.position.equals(player.selection.get)).foreach(unit => {
 					val moveSuccess = unit.move(gameState, player.cursor)
 					if (moveSuccess) player.selection = Option(player.cursor)
+					val attackSuccess = unit.attacks(gameState, player.cursor)
+					if (attackSuccess) {
+						player.selection = None
+						uiState(player) = UiState.NoSelection
+					}
 				})
 		}
 	}

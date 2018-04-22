@@ -13,6 +13,7 @@ class Unit(val unitType: UnitType, val player: Player) {
 	var position: Hex = _
 	var hp: Int = unitType.hp
 	var movePoints: Int = speed
+	var canAttack: Boolean = true
 
 	def attack: Int = unitType.attack + effects.map(_.effectType.attack).sum
 
@@ -41,26 +42,41 @@ class Unit(val unitType: UnitType, val player: Player) {
 
 	// Actions
 
-	def attacks(target: Unit) {
-		target.takesDamage(this.attack)
-		this.takesDamage(target.defence)
+	/**
+		* Attempts to attack unit in target hex.
+		*
+		* @param gameState Current gameState
+		* @param target    Position of target to attack
+		* @return true if attacked successfully
+		*/
+	def attacks(gameState: GameState, target: Hex): Boolean = {
+		val targetUnit = gameState.units.find(_.position.equals(target))
+		if (targetUnit.isDefined
+			&& targetUnit.get != this // TODO: Check not same player instead
+			&& this.canAttack
+			&& getAttackHexes(gameState.terrain).contains(target)
+		) {
+			this.canAttack = false
+			this.movePoints = 0
+			targetUnit.get.takesDamage(this.attack)
+			this.takesDamage(targetUnit.get.defence)
+			true
+		} else false
 	}
 
 	/**
-		* Attempt to move unit.
+		* Attempt to move unit to target hex.
 		*
 		* @param gameState Current gameState
-		* @param to        Destination hex
-		* @return true if moved succesfully
+		* @param target    Destination hex
+		* @return true if moved successfully
 		*/
-	def move(gameState: GameState, to: Hex): Boolean = {
-		if (!gameState.units.map(_.position).contains(to) && getMoveHexes(gameState.terrain).contains(to)) {
-			this.movePoints -= getMoveCost(to, gameState.terrain)
-			this.position = to
+	def move(gameState: GameState, target: Hex): Boolean = {
+		if (!gameState.units.map(_.position).contains(target) && getMoveHexes(gameState.terrain).contains(target)) {
+			this.movePoints -= getMoveCost(target, gameState.terrain)
+			this.position = target
 			true
-		} else {
-			false
-		}
+		} else false
 	}
 
 	// Helpers
