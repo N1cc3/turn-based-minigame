@@ -31,13 +31,22 @@ class Unit(val unitType: UnitType, val player: Player) {
 
 	// Events
 
-	private def takesDamage(damage: Int, skipArmor: Boolean = false) {
+	/**
+		* Causes damage to this unit.
+		*
+		* @param damage    Amount of damage done.
+		* @param skipArmor If true, damage is not reduced by armor. Optional, defaults to false.
+		* @return true if this unit died.
+		*/
+	private def takesDamage(damage: Int, skipArmor: Boolean = false): Boolean = {
 		if (skipArmor) {
 			this.hp -= damage
 		} else {
 			this.hp -= max(0, damage - this.armor)
 		}
+		val dead = this.hp <= 0
 		this.hp = max(0, this.hp)
+		dead
 	}
 
 	// Actions
@@ -50,18 +59,22 @@ class Unit(val unitType: UnitType, val player: Player) {
 		* @return true if attacked successfully
 		*/
 	def attacks(gameState: GameState, target: Hex): Boolean = {
-		val targetUnit = gameState.units.find(_.position.equals(target))
-		if (targetUnit.isDefined
-			&& targetUnit.get.player != this.player
-			&& this.canAttack
-			&& getAttackHexes(gameState.terrain).contains(target)
-		) {
-			this.canAttack = false
-			this.movePoints = 0
-			targetUnit.get.takesDamage(this.attack)
-			this.takesDamage(targetUnit.get.defence)
-			true
-		} else false
+		var success = false
+		gameState.units.find(_.position.equals(target)).foreach(targetUnit => {
+			if (targetUnit.player != this.player
+				&& this.canAttack
+				&& getAttackHexes(gameState.terrain).contains(target)
+			) {
+				this.canAttack = false
+				this.movePoints = 0
+				val targetDead = targetUnit.takesDamage(this.attack)
+				if (targetDead) gameState.units -= targetUnit
+				val thisDead = this.takesDamage(targetUnit.defence)
+				if (thisDead) gameState.units -= this
+				success = true
+			}
+		})
+		success
 	}
 
 	/**
