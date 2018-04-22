@@ -3,8 +3,8 @@ X,Y,UNIT_TYPE,PLAYER
 5,0,"Ballista",0
 9,1,"Ballista",0
 2,5,"Ballista",0
-5,6,"Ballista",0
-8,4,"Ballista",0
-2,8,"Ballista",0
-4,9,"Ballista",0
-9,7,"Ballista",0
+5,6,"Ballista",1
+8,4,"Ballista",1
+2,8,"Ballista",1
+4,9,"Ballista",1
+9,7,"Ballista",1

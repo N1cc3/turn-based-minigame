@@ -39,13 +39,13 @@ class GameCanvas extends Canvas {
 	private def drawMap(terrain: Terrain) {
 		val size = hexSize(terrain)
 		gc.clearRect(0, 0, this.getWidth, this.getHeight)
-		val colorAdjust = new ColorAdjust()
-		colorAdjust.setBrightness(-0.05)
+		val columnShadowEffect = new ColorAdjust()
+		columnShadowEffect.setBrightness(-0.05)
 		for (y <- 0 until terrain.sizeY) {
 			for (x <- 0 until terrain.sizeX) {
 				val hex = new Hex(x, y)
 				val position = hex.drawingPosition(size)
-				if (hex.x % 2 == 1) gc.setEffect(colorAdjust)
+				if (hex.x % 2 == 1) gc.setEffect(columnShadowEffect)
 				gc.drawImage(terrain(x, y).image, position.x, position.y, size * sqrt(3), size * 2)
 				if (hex.x % 2 == 1) gc.setEffect(null)
 			}
@@ -54,9 +54,13 @@ class GameCanvas extends Canvas {
 
 	private def drawUnits(units: List[Unit], terrain: Terrain) {
 		val size = hexSize(terrain)
+		val redPlayerEffect = new ColorAdjust()
+		redPlayerEffect.hue = 0.85
 		for (unit <- units) {
 			val position = unit.position.drawingPosition(size)
+			if (unit.player.color == Color.Red) gc.setEffect(redPlayerEffect)
 			gc.drawImage(unit.unitType.image, position.x, position.y, size * sqrt(3), size * 2)
+			if (unit.player.color == Color.Red) gc.setEffect(null)
 		}
 	}
 
