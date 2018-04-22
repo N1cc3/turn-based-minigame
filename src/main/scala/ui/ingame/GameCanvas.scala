@@ -58,9 +58,14 @@ class GameCanvas extends Canvas {
 		redPlayerEffect.hue = 0.85
 		for (unit <- units) {
 			val position = unit.position.drawingPosition(size)
-			if (unit.player.color == Color.Red) gc.setEffect(redPlayerEffect)
-			gc.drawImage(unit.unitType.image, position.x, position.y, size * sqrt(3), size * 2)
-			if (unit.player.color == Color.Red) gc.setEffect(null)
+			val image = unit.unitType.image
+			if (unit.player.color == Color.Red) {
+				gc.setEffect(redPlayerEffect)
+				gc.drawImage(image, image.getWidth, 0, -image.getWidth, image.getHeight, position.x, position.y, size * sqrt(3), size * 2)
+				gc.setEffect(null)
+			} else {
+				gc.drawImage(image, position.x, position.y, size * sqrt(3), size * 2)
+			}
 		}
 	}
 
