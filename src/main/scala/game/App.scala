@@ -10,7 +10,6 @@ class App(mod: Mod = new Mod("default")) extends PrimaryStage {
 
 	private val mainMenu = new MainMenu()
 	private val mapSelect = new MapSelect(mod)
-	private val inGameScene = new InGameScene(mod)
 	private val gameOverScreen = new GameOverScreen()
 
 	StyleManager.getInstance().addUserAgentStylesheet(mod.cssFilePath)
@@ -22,13 +21,23 @@ class App(mod: Mod = new Mod("default")) extends PrimaryStage {
 		this.scene = mapSelect
 	})
 
-	mapSelect.onStartGame(handle {
+	mainMenu.onLoadGame(handle {
+		val inGameScene = new InGameScene(mod, mod.loadGame(""))
+		inGameScene.onGameEnd(gameState => {
+			gameOverScreen.setGameState(gameState)
+			this.scene = gameOverScreen
+		})
 		this.scene = inGameScene
 	})
 
-	inGameScene.onGameEnd(gameState => {
-		gameOverScreen.setGameState(gameState)
-		this.scene = gameOverScreen
+	mapSelect.onStartGame(handle {
+		val scenario = mod.loadScenario(mapSelect.getSelectedScenarioName)
+		val inGameScene = new InGameScene(mod, scenario)
+		inGameScene.onGameEnd(gameState => {
+			gameOverScreen.setGameState(gameState)
+			this.scene = gameOverScreen
+		})
+		this.scene = inGameScene
 	})
 
 	gameOverScreen.onBackToMainMenu(handle {

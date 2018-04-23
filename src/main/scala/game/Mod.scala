@@ -1,8 +1,8 @@
 package game
 
-import java.io.File
+import java.io.{File, FileOutputStream, PrintWriter}
 
-import com.github.tototoshi.csv.CSVReader
+import com.github.tototoshi.csv.{CSVReader, CSVWriter}
 import game.data._
 import hexgrid.Hex
 import scalafx.scene.image.Image
@@ -105,8 +105,46 @@ class Mod(val name: String) {
 		gameState
 	}
 
+	def saveGame(gameState: GameState) {
+		val savePath = "" // modPath + "save/"
 
-	private def getImage(name: String) = new Image("file://" + modPath + name)
+		val dataFile = new File(savePath + "data.csv")
+		val scenarioWriter: CSVWriter = CSVWriter.open(dataFile)
+		scenarioWriter.writeRow(List("NAME","SIZE_X","SIZE_Y","DESCRIPTION"))
+		val terrain = gameState.terrain
+		val scenarioName = terrain.name
+		val scenarioSizeX = terrain.sizeX
+		val scenarioSizeY = terrain.sizeY
+		val scenarioDescription = terrain.description
+		scenarioWriter.writeRow(List(scenarioName, scenarioSizeX, scenarioSizeY, scenarioDescription))
+		scenarioWriter.close()
+
+		val terrainFile = new File(savePath + "terrain.csv")
+		val terrainWriter: CSVWriter = CSVWriter.open(terrainFile)
+		terrainWriter.writeRow(List("X","Y","TERRAIN_TYPE"))
+		for (x <- 0 until scenarioSizeX) {
+			for (y <- 0 until scenarioSizeY) {
+				terrainWriter.writeRow(List(x, y, terrain(x, y).name))
+			}
+		}
+		terrainWriter.close()
+
+		val unitFile = new File(savePath + "units.csv")
+		val unitWriter: CSVWriter = CSVWriter.open(unitFile)
+		unitWriter.writeRow(List("X","Y","UNIT_TYPE","PLAYER"))
+		for (unit <- gameState.units) {
+			val x = unit.position.x
+			val y = unit.position.y
+			val unitType = unit.unitType.name
+			val player = gameState.players.indexOf(unit.player)
+			unitWriter.writeRow(List(x, y, unitType, player))
+		}
+		unitWriter.close()
+	}
+
+	// Helpers
+
+	def getImage(name: String) = new Image("file://" + modPath + name)
 
 	private def getScenarios: Seq[String] = {
 		val d = new File(modPath + "/scenarios")

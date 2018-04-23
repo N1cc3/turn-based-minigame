@@ -27,6 +27,8 @@ class MapSelect(mod: Mod) extends Scene {
 	startGameBtn.styleClass += "MapSelect-startGameBtn"
 	mainBox.children.add(startGameBtn)
 
+	def getSelectedScenarioName: String = mapButtons.find(_.isSelected).get.getText
+
 	// Events
 
 	def onStartGame(e: EventHandler[ActionEvent]) {

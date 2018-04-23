@@ -12,7 +12,7 @@ import ui.{Command, Controls}
 import scala.collection.mutable
 import scala.math.{max, min}
 
-class InGameScene(mod: Mod) extends Scene {
+class InGameScene(mod: Mod, gameState: GameState) extends Scene {
 
 	private val mainBox = new HBox()
 	this.content.add(mainBox)
@@ -33,7 +33,6 @@ class InGameScene(mod: Mod) extends Scene {
 	private val playerPanels = Array(playerPanel1, playerPanel2)
 
 	private val canvas = new GameCanvas()
-	private val gameState: GameState = mod.loadScenario(mod.scenarioNames.head)
 	canvasBox.getChildren.add(canvas)
 
 	canvas.drawGame(gameState)
@@ -135,6 +134,7 @@ class InGameScene(mod: Mod) extends Scene {
 
 	private def ready(player: Player) {
 		gameState.nextTurn()
+		if (gameState.playerInTurn == 0) mod.saveGame(gameState)
 	}
 
 	object UiState extends Enumeration {
