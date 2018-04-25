@@ -71,6 +71,12 @@ class Hex(val x: Int, val y: Int) {
 		corners.toArray
 	}
 
+	/**
+		* For checking if hex is inside terrain. From 0 to specified max values.
+		* @param maxX Map width.
+		* @param maxY Map height.
+		* @return true if inside
+		*/
 	def isInside(maxX: Int, maxY: Int): Boolean = 0 <= x && x < maxX && 0 <= y && y < maxY
 
 	override def equals(that: Any): Boolean =
@@ -80,5 +86,7 @@ class Hex(val x: Int, val y: Int) {
 		}
 
 	override def hashCode(): Int = 41 * (41 + this.x) + this.y
+
+	override def toString: String = s"Hex($x, $y)"
 
 }

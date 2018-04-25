@@ -1,11 +1,15 @@
 package game.data
 
+import game.ai.Ai
+
 import scala.collection.mutable.ListBuffer
 
 class GameState(
 								 val terrain: Terrain,
 								 val players: Array[Player],
 							 ) {
+
+	var isVsPlayer = false
 
 	val units = new ListBuffer[Unit]
 
@@ -20,6 +24,10 @@ class GameState(
 			unit.movePoints = unit.unitType.speed
 			unit.canAttack = true
 		})
+		if (!isVsPlayer && playerInTurn != 0) {
+			Ai.playTurn(this, players(1)) // Hack: Not extendable to more players
+			nextTurn()
+		}
 	}
 
 	def isGameOver: Boolean = {

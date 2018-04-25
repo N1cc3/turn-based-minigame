@@ -5,6 +5,10 @@
     -fx-spacing: 40px;
 }
 
+.MainMenu-vsPlayerCheckbox {
+
+}
+
 .MainMenu-newGameBtn {
     -fx-font-size: 14px;
     -fx-text-fill: green;

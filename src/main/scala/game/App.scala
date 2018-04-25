@@ -22,7 +22,9 @@ class App(mod: Mod = new Mod("default")) extends PrimaryStage {
 	})
 
 	mainMenu.onLoadGame(handle {
-		val inGameScene = new InGameScene(mod, mod.loadGame(mod.getSavePath))
+		val gameState = mod.loadGame(mod.getSavePath)
+		gameState.isVsPlayer = mainMenu.isVsPlayer
+		val inGameScene = new InGameScene(mod, gameState)
 		inGameScene.onGameEnd(gameState => {
 			gameOverScreen.setGameState(gameState)
 			this.scene = gameOverScreen
@@ -31,8 +33,9 @@ class App(mod: Mod = new Mod("default")) extends PrimaryStage {
 	})
 
 	mapSelect.onStartGame(handle {
-		val scenario = mod.loadScenario(mapSelect.getSelectedScenarioName)
-		val inGameScene = new InGameScene(mod, scenario)
+		val gameState = mod.loadScenario(mapSelect.getSelectedScenarioName)
+		gameState.isVsPlayer = mainMenu.isVsPlayer
+		val inGameScene = new InGameScene(mod, gameState)
 		inGameScene.onGameEnd(gameState => {
 			gameOverScreen.setGameState(gameState)
 			this.scene = gameOverScreen
