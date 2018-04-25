@@ -30,7 +30,7 @@
 }
 
 .InGameScene-mainBox {
-
+    -fx-min-width: 800px;
 }
 
 .InGameScene-playerPanel1 {
@@ -43,6 +43,15 @@
 
 .InGameScene-playerPanel2 {
     -fx-background-color: pink;
+}
+
+.InGameScene-autosavePopupBox {
+    -fx-background-color: white;
+    -fx-padding: 6px;
+}
+
+.InGameScene-autosaveLabel {
+    -fx-font-size: 18px;
 }
 
 .PlayerPanel-mainBox {

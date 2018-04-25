@@ -5,8 +5,12 @@ import java.util.function.Consumer
 import game.Mod
 import game.data.{GameState, Player}
 import hexgrid.Hex
+import scalafx.animation.{KeyFrame, Timeline}
 import scalafx.scene.Scene
+import scalafx.scene.control.Label
 import scalafx.scene.layout.{HBox, VBox}
+import scalafx.stage.Popup
+import scalafx.util.Duration
 import ui.{Command, Controls}
 
 import scala.collection.mutable
@@ -134,7 +138,20 @@ class InGameScene(mod: Mod, gameState: GameState) extends Scene {
 
 	private def ready(player: Player) {
 		gameState.nextTurn()
-		if (gameState.playerInTurn == 0) mod.saveGame(gameState)
+		if (gameState.playerInTurn == 0) {
+			mod.saveGame(gameState)
+			val popup = new Popup()
+			val autosavePopupBox = new VBox
+			autosavePopupBox.styleClass += "InGameScene-autosavePopupBox"
+			val autosaveLabel = new Label("Game autosaved!")
+			autosavePopupBox.styleClass += "InGameScene-autosaveLabel"
+			autosavePopupBox.children.add(autosaveLabel)
+			popup.content.add(autosavePopupBox)
+			popup.show(this.getWindow)
+			Timeline(List(
+				KeyFrame(Duration(1500), onFinished = _ => {popup.hide()})
+			)).play()
+		}
 	}
 
 	object UiState extends Enumeration {

@@ -9,6 +9,7 @@ import scalafx.scene.image.Image
 import scalafx.scene.paint.Color
 
 import scala.collection.mutable
+import scala.reflect.io.Directory
 
 class Mod(val name: String) {
 
@@ -106,7 +107,8 @@ class Mod(val name: String) {
 	}
 
 	def saveGame(gameState: GameState) {
-		val savePath = "" // modPath + "save/"
+		createSaveFolder()
+		val savePath: String = getSavePath
 
 		val dataFile = new File(savePath + "data.csv")
 		val scenarioWriter: CSVWriter = CSVWriter.open(dataFile)
@@ -142,6 +144,8 @@ class Mod(val name: String) {
 		unitWriter.close()
 	}
 
+	def getSavePath: String = "saves/" + this.name + "/"
+
 	// Helpers
 
 	def getImage(name: String) = new Image("file://" + modPath + name)
@@ -153,6 +157,18 @@ class Mod(val name: String) {
 		} else {
 			List[String]()
 		}
+	}
+
+	private def createSaveFolder() {
+		val saves = new File("saves")
+		saves.setWritable(true)
+		val savesDirectory = new Directory(saves)
+		savesDirectory.createDirectory()
+
+		val modSave = new File("saves/" + this.name)
+		modSave.setWritable(true)
+		val modSaveDirectory = new Directory(modSave)
+		modSaveDirectory.createDirectory()
 	}
 
 }

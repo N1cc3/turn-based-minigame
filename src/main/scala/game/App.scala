@@ -22,7 +22,7 @@ class App(mod: Mod = new Mod("default")) extends PrimaryStage {
 	})
 
 	mainMenu.onLoadGame(handle {
-		val inGameScene = new InGameScene(mod, mod.loadGame(""))
+		val inGameScene = new InGameScene(mod, mod.loadGame(mod.getSavePath))
 		inGameScene.onGameEnd(gameState => {
 			gameOverScreen.setGameState(gameState)
 			this.scene = gameOverScreen
