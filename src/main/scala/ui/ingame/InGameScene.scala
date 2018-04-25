@@ -137,6 +137,7 @@ class InGameScene(mod: Mod, gameState: GameState) extends Scene {
 	}
 
 	private def ready(player: Player) {
+		if (gameState.players(gameState.playerInTurn) != player) return
 		gameState.nextTurn()
 		if (gameState.playerInTurn == 0) {
 			mod.saveGame(gameState)
