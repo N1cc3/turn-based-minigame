@@ -35,6 +35,7 @@ class InGameScene(mod: Mod, gameState: GameState) extends Scene {
 	mainBox.getChildren.add(playerPanel2)
 
 	private val playerPanels = Array(playerPanel1, playerPanel2)
+	playerPanels.indices.foreach(idx => playerPanels(idx).inTurn(gameState.playerInTurn == idx))
 
 	private val canvas = new GameCanvas()
 	canvasBox.getChildren.add(canvas)
