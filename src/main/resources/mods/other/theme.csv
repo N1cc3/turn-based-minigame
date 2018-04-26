@@ -1,3 +1,0 @@
-ELEMENT,STYLE
-MainMenu.newGameBtn,"-fx-font-size: 50px; -fx-color: green;"
-MainMenu.loadGameBtn,"-fx-font-size: 40px; -fx-color: blue;"
