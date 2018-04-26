@@ -3,9 +3,9 @@ package game.ai
 import game.data.{GameState, Player, Unit}
 import hexgrid.Hex
 
-import math.max
 import scala.collection.immutable.ListMap
 import scala.collection.mutable
+import scala.math.max
 
 object Ai {
 

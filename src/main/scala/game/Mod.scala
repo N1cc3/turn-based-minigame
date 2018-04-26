@@ -1,6 +1,6 @@
 package game
 
-import java.io.{File, FileOutputStream, PrintWriter}
+import java.io.File
 
 import com.github.tototoshi.csv.{CSVReader, CSVWriter}
 import game.data._
