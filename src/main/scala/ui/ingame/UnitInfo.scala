@@ -50,7 +50,7 @@ class UnitInfo extends VBox {
 		armorRow.show(unit.unitType.armor)
 		rangeRow.show(unit.unitType.range)
 		speedRow.show(unit.unitType.speed)
-		hpBar.setProgress(unit.hp / unit.unitType.hp)
+		hpBar.setProgress(unit.hp.toDouble / unit.unitType.hp)
 		hpLabel.text = unit.hp + " / " + unit.unitType.hp
 	}
 
