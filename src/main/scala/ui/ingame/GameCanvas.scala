@@ -24,7 +24,7 @@ class GameCanvas extends Canvas {
 						if (unit.canAttack) this.drawAttackHexes(gameState.terrain, unit)
 					}
 				})
-				this.drawSelection(gameState.terrain, selectedHex, player.color)
+				if (!gameState.isVsPlayer && gameState.players.indexOf(player) != 1) this.drawSelection(gameState.terrain, selectedHex, player.color)
 			})
 			this.drawCursor(gameState.terrain, player.cursor, player.color)
 		})
