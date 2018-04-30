@@ -6,7 +6,7 @@ import scala.collection.mutable
 
 class Controls extends mutable.HashMap[String, (Int, Command.Value)] {
 
-	val controlsReader: CSVReader = CSVReader.open(getClass.getResource("/controls.csv").getPath)
+	val controlsReader: CSVReader = CSVReader.open("resources/controls.csv")
 	for (controlsData <- controlsReader.allWithHeaders()) {
 		val player = controlsData("PLAYER").toInt
 		val command = controlsData("COMMAND") match {
