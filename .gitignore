@@ -1,1 +1,10 @@
 /bin/
+.idea
+.settings
+project/project
+project/target
+target
+.cache-main
+.classpath
+.project
+studio2-project-tbs.iml
