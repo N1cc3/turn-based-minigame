@@ -2,6 +2,7 @@ package game
 
 import java.io.File
 
+import game.Resources.pathTo
 import scalafx.Includes.handle
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
@@ -21,7 +22,7 @@ object Launcher extends JFXApp {
 	})
 
 	private def getMods: Seq[String] = {
-	  val d = new File(getClass.getClassLoader.getResource("mods/").getPath)
+	  val d = new File(pathTo("mods"))
 	  if (d.exists && d.isDirectory) {
 	  	d.listFiles.filter(_.isDirectory).map(_.getName)
 	  } else {

@@ -3,6 +3,7 @@ package game
 import java.io.File
 
 import com.github.tototoshi.csv.{CSVReader, CSVWriter}
+import game.Resources.{pathTo, urlTo}
 import game.data._
 import hexgrid.Hex
 import scalafx.scene.image.Image
@@ -13,9 +14,11 @@ import scala.reflect.io.Directory
 
 class Mod(val name: String) {
 
-	val modPath: String = getClass.getClassLoader.getResource("mods/" + name).getPath + "/"
+	private val modFolder: String = s"mods/$name/"
 
-	val cssFilePath: String = "file://" + modPath + "theme.css"
+	val modPath: String = pathTo(modFolder)
+
+	val cssFilePath: String = urlTo(modFolder + "theme.css")
 
 	val scenarioNames: Seq[String] = getScenarios
 
@@ -148,10 +151,10 @@ class Mod(val name: String) {
 
 	// Helpers
 
-	def getImage(name: String) = new Image("file://" + modPath + name)
+	private def getImage(name: String) = new Image(urlTo(modFolder + name))
 
 	private def getScenarios: Seq[String] = {
-		val d = new File(modPath + "/scenarios")
+		val d = new File(modPath + "scenarios")
 		if (d.exists && d.isDirectory) {
 			d.listFiles.filter(_.isDirectory).map(_.getName)
 		} else {

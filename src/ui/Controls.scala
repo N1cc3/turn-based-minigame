@@ -1,12 +1,13 @@
 package ui
 
 import com.github.tototoshi.csv.CSVReader
+import game.Resources.pathTo
 
 import scala.collection.mutable
 
 class Controls extends mutable.HashMap[String, (Int, Command.Value)] {
 
-	val controlsReader: CSVReader = CSVReader.open("resources/controls.csv")
+	val controlsReader: CSVReader = CSVReader.open(pathTo("controls.csv"))
 	for (controlsData <- controlsReader.allWithHeaders()) {
 		val player = controlsData("PLAYER").toInt
 		val command = controlsData("COMMAND") match {
